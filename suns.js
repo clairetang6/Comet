@@ -1,11 +1,18 @@
-var SparkParticle = function( state ){	
+var SparkParticle = function( state , forBackground){	
 	Kiwi.GameObjects.Sprite.call( this, state, state.textures['sparkParticle'], state.game.stage.width + 100, 0, false);
 	
 	this.state = state;
 	this.x = this.state.random.integerInRange(0, state.game.stage.width + 100);
-	this.y = this.state.random.integerInRange(0, state.game.stage.height);
-	this.scale = this.state.random.integerInRange(0, 10) / 10;
-	this.speed = this.scaleX * 2;
+	this.y = this.state.random.integerInRange(-100, state.game.stage.height);
+	
+	if(forBackground){
+		this.scale = this.state.random.integerInRange(0, 50) / 80;
+		this.speed = this.scaleX * 3;
+	}else{
+		this.scale = this.state.random.integerInRange(20, 50) / 50;
+		this.speed = this.scaleX * 10;
+	}
+
 	
 }
 Kiwi.extend( SparkParticle, Kiwi.GameObjects.Sprite );
@@ -42,17 +49,28 @@ Sun.prototype.update = function(){
 
 }
 
-var Hero = function( state, x, y){
+var Hero = function( state, x, y, name){
 	Kiwi.GameObjects.Sprite.call( this, state, state.textures['hero_spritesheet'], x, y, false);
 	
 	this.vx = 0;
 	this.vy = 0;
 	this.state = state;
+	this.name = name;
 	
-	this.animation.add('chill', [0], 0.1);
-	this.animation.add('death', [0,1,2,3,4,5,6,7], 0.05);
+	this.animation.add('blue', [0], 0.1);
+	this.animation.add('bluedeath', [0,1,2,3,4,5,6,7], 0.05);
+	
+	this.animation.add('fire', [8], 0.1);
+	this.animation.add('firedeath', [8,9,10,11,12,13,14,15], 0.05);
+	this.animation.add('apple', [16], 0.1);
+	this.animation.add('appledeath', [16,17,18,19,20,21,22,23], 0.05)
+	
 }
 Kiwi.extend( Hero, Kiwi.GameObjects.Sprite );
+
+Hero.prototype.die = function(){
+	this.animation.play(this.name + 'death');
+}
 
 Hero.prototype.update = function(){
 	Kiwi.GameObjects.Sprite.prototype.update.call(this);
