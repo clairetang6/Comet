@@ -29,6 +29,38 @@ SparkParticle.prototype.update = function(){
 }
 
 
+var Planet = function( state, sun, textureKey ){
+	Kiwi.GameObjects.Sprite.call( this, state, state.textures[textureKey], 0, 0, false);
+	
+	this.state = state;
+	this.sun = sun;
+	this.rotPointX = this.width * 0.5;
+	this.rotPointY = this.height * 0.5;	
+	
+	this.center = new Kiwi.Geom.Point(0,0);
+	this.center.x = this.width * 0.5;
+	this.center.y = this.height * 0.5;
+	
+	this.radius = 300;	
+	this.theta = 0; 
+	
+}
+Kiwi.extend( Planet, Kiwi.GameObjects.Sprite );
+
+Planet.prototype.update = function(){
+	Kiwi.GameObjects.Sprite.prototype.update.call(this);
+
+	this.x = this.sun.center.x + Math.cos(this.theta) * this.radius - this.width/2;
+	this.y = this.sun.center.y + Math.sin(this.theta) * this.radius - this.height/2;
+	
+	this.theta += 0.005; 
+	if(this.theta > 2*Math.PI){
+		this.theta -= 2*Math.PI;
+	}	
+	
+	this.rotation += 0.02;
+}
+
 var Sun = function( state, x, y, scale, textureKey ){
 	Kiwi.GameObjects.Sprite.call( this, state, state.textures[textureKey], x, y, false);
 	this.state = state;
@@ -41,12 +73,16 @@ var Sun = function( state, x, y, scale, textureKey ){
 
 	this.center = new Kiwi.Geom.Point(0,0);
 
+
 }
 Kiwi.extend( Sun, Kiwi.GameObjects.Sprite );
 
 Sun.prototype.update = function(){
 	Kiwi.GameObjects.Sprite.prototype.update.call(this);
 
+	this.center.x = this.x + this.width * 0.5;
+	this.center.y = this.y + this.height * 0.5;
+	this.rotation += 0.01;
 }
 
 var Hero = function( state, x, y, name){

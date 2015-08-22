@@ -6,6 +6,7 @@ gameState.preload = function() {
 	
 	this.addImage('sun1', 'assets/suns/sun_red2_242.png')
 	this.addImage('sparkParticle', 'assets/sparks/spark_particle_1.png')
+	this.addImage('planet1', 'assets/planets/rock_6_118.png');
 }
 
 gameState.create = function() {
@@ -18,6 +19,7 @@ gameState.create = function() {
 	
 	this.sun = new Sun(this, 200, 200, 1, 'sun1');
 	this.hero = new Hero(this, 100, 100);
+	this.planet = new Planet(this, this.sun, 'planet1');
 	
 	this.backgroundSparkParticles = new Kiwi.Group(this);
 	for (var i = 0; i < 100; i++){
@@ -43,6 +45,7 @@ gameState.create = function() {
 	this.addChild(this.backgroundSparkParticles);
 
 	this.addChild(this.sun);
+	this.addChild(this.planet);
 	this.addChild(this.hero);	
 	this.addChild(this.foregroundSparkParticles);
 }
