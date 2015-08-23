@@ -1,0 +1,10 @@
+{
+  "name": "Comet",
+  "version": "0.1.0",
+  "description": "Codename: COMET",
+  "main": "Gruntfile.js",
+  "scripts": {
+    "test": "test"
+  },
+  "author": "Claire Tang"
+}
