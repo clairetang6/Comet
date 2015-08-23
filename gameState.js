@@ -7,6 +7,7 @@ gameState.preload = function() {
 	this.addImage('sun1', 'assets/suns/sun_red2_242.png')
 	this.addImage('sparkParticle', 'assets/sparks/spark_particle_1.png')
 	this.addImage('planet1', 'assets/planets/rock_6_118.png');
+	this.addImage('meteorite', 'assets/sparks/met_1.png')
 }
 
 gameState.create = function() {
@@ -31,6 +32,9 @@ gameState.create = function() {
 		this.foregroundSparkParticles.addChild(new SparkParticle(this, false));
 	}	
 	
+	this.meteor = new Meteor(this);
+	
+	
 	this.pauseKey = this.game.input.keyboard.addKey(Kiwi.Input.Keycodes.P);
 	this.debugKey = this.game.input.keyboard.addKey(Kiwi.Input.Keycodes.I);
 	this.dieKey = this.game.input.keyboard.addKey(Kiwi.Input.Keycodes.D);
@@ -43,6 +47,7 @@ gameState.create = function() {
 
 
 	this.addChild(this.backgroundSparkParticles);
+	this.addChild(this.meteor);
 
 	this.addChild(this.sun);
 	this.addChild(this.planet);

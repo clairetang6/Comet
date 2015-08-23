@@ -6,10 +6,10 @@ var SparkParticle = function( state , forBackground){
 	this.y = this.state.random.integerInRange(-100, state.game.stage.height);
 	
 	if(forBackground){
-		this.scale = this.state.random.integerInRange(0, 50) / 80;
+		this.scale = this.state.random.integerInRange(0, 50) / 100;
 		this.speed = this.scaleX * 3;
 	}else{
-		this.scale = this.state.random.integerInRange(20, 50) / 50;
+		this.scale = this.state.random.integerInRange(20, 50) / 80;
 		this.speed = this.scaleX * 10;
 	}
 
@@ -28,6 +28,33 @@ SparkParticle.prototype.update = function(){
 	}
 }
 
+var Meteor = function( state ){
+	Kiwi.Group.call(this, state);
+	
+	this.x = state.game.stage.width+100;
+	var numberOfShadows = 40;
+	for (var i = 0; i < numberOfShadows; i++){		
+		var meteorShadow = new Kiwi.GameObjects.Sprite(state, state.textures['meteorite'], 0 + 2*i, 0, false);
+		meteorShadow.scale = (1 - i/numberOfShadows) * 0.8; 
+		meteorShadow.alpha = 1 - i/numberOfShadows;
+		this.addChild(meteorShadow);
+	}
+
+	this.y = this.state.random.integerInRange(-100, state.game.stage.height);
+	this.speed = 10;
+}
+Kiwi.extend( Meteor, Kiwi.Group );
+
+Meteor.prototype.update = function(){
+	Kiwi.Group.prototype.update.call(this);
+	
+	this.x -= this.speed;
+
+	if(this.x < -100){
+		this.x = this.state.game.stage.width + 200;
+		this.y = this.state.random.integerInRange(0, this.state.game.stage.height);	
+	}
+}
 
 var Planet = function( state, sun, textureKey ){
 	Kiwi.GameObjects.Sprite.call( this, state, state.textures[textureKey], 0, 0, false);
@@ -82,7 +109,7 @@ Sun.prototype.update = function(){
 
 	this.center.x = this.x + this.width * 0.5;
 	this.center.y = this.y + this.height * 0.5;
-	this.rotation += 0.01;
+	this.rotation += 0.02;
 }
 
 var Hero = function( state, x, y, name){
