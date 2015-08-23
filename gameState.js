@@ -19,7 +19,7 @@ gameState.create = function() {
 	
 	
 	this.sun = new Sun(this, 200, 200, 1, 'sun1');
-	this.hero = new Hero(this, 100, 100);
+	this.hero = new Hero(this, 100, 100, 'fire');
 	this.planet = new Planet(this, this.sun, 'planet1');
 	
 	this.backgroundSparkParticles = new Kiwi.Group(this);
@@ -60,14 +60,12 @@ gameState.update = function() {
 	Kiwi.State.prototype.update.call(this);
 }
 
+gameState.updateHacked = function() {
+	Kiwi.State.prototype.update.call(this);
+}
 gameState.onKeyDownCallback = function(keyCode){
 	if(keyCode == this.debugKey.keyCode){
-		this.heroIndex++; 
-		if(this.heroIndex >= this.heros.length){
-			this.heroIndex = 0; 
-		}
-		this.hero.name = this.heros[this.heroIndex];
-		this.hero.animation.play(this.hero.name);
+		gameState.updateHacked();
 	}
 	
 	if(keyCode == this.dieKey.keyCode){

@@ -113,30 +113,88 @@ Sun.prototype.update = function(){
 }
 
 var Hero = function( state, x, y, name){
-	Kiwi.GameObjects.Sprite.call( this, state, state.textures['hero_spritesheet'], x, y, false);
+	Kiwi.Group.call( this, state);
+	this.x = x; 
+	this.y = y;
+	
+	this.comet = new Kiwi.GameObjects.Sprite( state, state.textures['hero_spritesheet'], 0, 0, false);
+	this.comet.animation.add('blue', [0], 0.1);
+	this.comet.animation.add('bluedeath', [0,1,2,3,4,5,6,7], 0.05);
+	
+	this.comet.animation.add('fire', [8], 0.1);
+	this.comet.animation.add('firedeath', [8,9,10,11,12,13,14,15], 0.05);
+	this.comet.animation.add('apple', [16], 0.1);
+	this.comet.animation.add('appledeath', [16,17,18,19,20,21,22,23], 0.05)
+	this.comet.name = name;
+	this.comet.animation.play(this.comet.name);
+	
+	this.tailGroup = new Kiwi.Group(state);
+
+	this.shadowScales = [0, 1];
+	this.shadowAlphas = [0, 1];
+	this.shadowOffsets = [0, 300];
+	this.numberOfShadows = 60;
+	for (var i = 0; i < this.numberOfShadows; i++){
+		var cometShadow = new CometShadow( state, this, i);
+		cometShadow.scale = (1 - i/this.numberOfShadows);
+		cometShadow.alpha = (1 - i/this.numberOfShadows); 
+		cometShadow.x = (0 - (6*i));
+		console.log(cometShadow.x);
+		this.tailGroup.addChild(cometShadow);
+	}
+	
+	this.addChild(this.tailGroup);	
+	this.addChild(this.comet)
 	
 	this.vx = 0;
 	this.vy = 0;
 	this.state = state;
-	this.name = name;
+}
+Kiwi.extend( Hero, Kiwi.Group );
+
+var CometShadow = function( state , hero, index ){
+	Kiwi.GameObjects.Sprite.call(this, state, state.textures['hero_spritesheet'], 0, 3, false);	
 	
-	this.animation.add('blue', [0], 0.1);
-	this.animation.add('bluedeath', [0,1,2,3,4,5,6,7], 0.05);
+	this.hero = hero; 
+	this.index = index;
 	
-	this.animation.add('fire', [8], 0.1);
-	this.animation.add('firedeath', [8,9,10,11,12,13,14,15], 0.05);
-	this.animation.add('apple', [16], 0.1);
-	this.animation.add('appledeath', [16,17,18,19,20,21,22,23], 0.05)
+	this.animation.add('bluetail', [7], 0.1, false);
+	this.animation.add('firetail', [15], 0.1, false);
+	this.animation.add('appletail', [23], 0.1, false);
+	this.animation.play(this.hero.comet.name + 'tail');
+}
+Kiwi.extend( CometShadow, Kiwi.GameObjects.Sprite);
+
+CometShadow.prototype.update = function(){
+	Kiwi.GameObjects.Sprite.prototype.update.call(this);
+	
+	//this.alpha -= 1/this.hero.numberOfShadows;
+	//this.scaleX -= 1/this.hero.numberOfShadows;
+	//this.scaleY -= 1/this.hero.numberOfShadows;
+
+	//if(this.alpha <= 0){
+	//	this.alpha = 1;
+	//}
+	//if(this.scaleX <= 0){
+	//	this.scaleX = 1;
+//		this.scaleY = 1;
+//	}
+	
+//	this.x -= 6;
+//	if(this.x <= -354){
+//		this.x = 0;
+//	}
 	
 }
-Kiwi.extend( Hero, Kiwi.GameObjects.Sprite );
+
 
 Hero.prototype.die = function(){
-	this.animation.play(this.name + 'death');
+	this.comet.animation.play(this.comet.name + 'death');
+	//do something with his tail. 
 }
 
 Hero.prototype.update = function(){
-	Kiwi.GameObjects.Sprite.prototype.update.call(this);
+	Kiwi.Group.prototype.update.call(this);
 	
 	if(this.state.upKey.isDown){
 		if(this.vy > -50){
