@@ -6,8 +6,9 @@ gameState.preload = function() {
 	
 	this.addImage('sun1', 'assets/suns/sun_red2_242.png')
 	this.addImage('sparkParticle', 'assets/sparks/spark_particle_1.png')
-	this.addImage('planet1', 'assets/planets/rock_6_118.png');
-	this.addImage('meteorite', 'assets/sparks/met_1.png')
+	this.addImage('planet1', 'assets/planets/rock_13_118.png');
+	this.addImage('meteorite', 'assets/sparks/met_1.png');
+	this.addImage('redSpark', 'assets/sparks/red_fire_spark.png');
 }
 
 gameState.create = function() {

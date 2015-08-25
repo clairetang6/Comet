@@ -143,8 +143,17 @@ var Hero = function( state, x, y, name){
 		this.tailGroup.addChild(cometShadow);
 	}
 	
+	this.sparkGroup = new Kiwi.Group(state);
+	
+	this.numberOfSparks = 10;
+	for (var i = 0; i < this.numberOfSparks; i++){
+		var spark = new Spark(state, this, i);
+		this.sparkGroup.addChild(spark);
+	}
+	
 	this.addChild(this.tailGroup);	
-	this.addChild(this.comet)
+	this.addChild(this.sparkGroup);
+	this.addChild(this.comet);
 	
 	this.vx = 0;
 	this.vy = 0;
@@ -168,24 +177,59 @@ Kiwi.extend( CometShadow, Kiwi.GameObjects.Sprite);
 CometShadow.prototype.update = function(){
 	Kiwi.GameObjects.Sprite.prototype.update.call(this);
 	
-	//this.alpha -= 1/this.hero.numberOfShadows;
-	//this.scaleX -= 1/this.hero.numberOfShadows;
-	//this.scaleY -= 1/this.hero.numberOfShadows;
+	this.index = this.index + 1; 
+	if(this.index >= this.hero.numberOfShadows -1){
+		this.index = 0;
+	}
+		
+	this.y = this.hero.vy * this.index * 0.04;
+	this.y -= this.hero.vy * Math.pow(this.index * 0.08, 2);
 
-	//if(this.alpha <= 0){
-	//	this.alpha = 1;
-	//}
-	//if(this.scaleX <= 0){
-	//	this.scaleX = 1;
-//		this.scaleY = 1;
-//	}
-	
-//	this.x -= 6;
-//	if(this.x <= -354){
-//		this.x = 0;
-//	}
+	this.alpha = 1 - this.index/this.hero.numberOfShadows;
+	this.scaleX = 1 - this.index/this.hero.numberOfShadows;
+	this.scaleY = 1 - this.index/this.hero.numberOfShadows;
+
+	this.x = 0 - (6*this.index);
+	this.x -= this.hero.vx * Math.pow(this.index * 0.08, 2);
 	
 }
+
+var Spark = function(state, hero, index){
+	Kiwi.GameObjects.StaticImage.call(this, state, 'redSpark');
+	this.state = state;
+	this.hero = hero;
+	this.index = index;
+	this.startingX = this.hero.comet.width/2 - 20;
+	this.startingY = this.hero.comet.height/2 - 4; 
+	this.angle = Math.PI;
+}
+Kiwi.extend(Spark, Kiwi.GameObjects.StaticImage);
+
+Spark.prototype.update = function(){
+	Kiwi.GameObjects.StaticImage.prototype.update.call(this);
+	
+	this.index = this.index + 0.1; 
+	if(this.index >= this.hero.numberOfSparks -1){
+		this.index = 0;
+		this.x = this.startingX;
+		this.y = this.startingY;
+		this.setRandomAngle();
+	}
+	
+	this.x = this.index * 10 * Math.cos(this.angle) + this.startingX;
+	this.y = this.index * 10 * Math.sin(this.angle) + this.startingY;
+	this.x -= this.hero.vx * Math.pow(this.index * 0.12, 2);
+	this.y -= this.hero.vy * Math.pow(this.index * 0.12, 2);	
+
+	this.scaleX = 1 - this.index/this.hero.numberOfSparks;
+	this.scaleY = 1 - this.index/this.hero.numberOfSparks;
+		
+}
+
+Spark.prototype.setRandomAngle = function(){
+	var randomFrac = this.state.random.frac() / 3;
+	this.angle = (5 * Math.PI)/6 + (randomFrac * Math.PI);
+};
 
 
 Hero.prototype.die = function(){
