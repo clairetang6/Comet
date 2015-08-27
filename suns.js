@@ -68,10 +68,11 @@ var Planet = function( state, sun, textureKey ){
 	this.center.x = this.width * 0.5;
 	this.center.y = this.height * 0.5;
 	
-	this.radius = 300;	
-	this.theta = 0; 
-	
-	this.hitCircle = new Kiwi.Geom.Circle(this.x + this.width/2, this.y + this.height/2, 115);
+	//this.radius = 300;	
+	//this.theta = 0; 
+	var params = {owner: this, name: 'Orbiter', radius: 300, orbitee: sun, speed: -1};
+	this.components.add(new OrbiterComponent(params));
+	this.components.add(new CircleColliderComponent({owner: this, diameter: 100}));
 	
 }
 Kiwi.extend( Planet, Kiwi.GameObjects.Sprite );
@@ -79,17 +80,24 @@ Kiwi.extend( Planet, Kiwi.GameObjects.Sprite );
 Planet.prototype.update = function(){
 	Kiwi.GameObjects.Sprite.prototype.update.call(this);
 
-	this.x = this.sun.center.x + Math.cos(this.theta) * this.radius - this.width/2;
-	this.y = this.sun.center.y + Math.sin(this.theta) * this.radius - this.height/2;
-	
-	this.theta += 0.005; 
-	if(this.theta > 2*Math.PI){
-		this.theta -= 2*Math.PI;
-	}	
-	
 	this.rotation += 0.02;
-	this.hitCircle.x = this.x + this.width/2;
-	this.hitCircle.y = this.y + this.height/2;
+}
+
+Planet.prototype.objType = function(){
+	return 'Planet';
+}
+
+var Moon = function( state, planet, textureKey ){
+	Kiwi.GameObjects.Sprite.call(this, state, state.textures[textureKey], 0, 0, false);
+	
+	var params = {owner: this, name: 'Orbiter', radius: 120, orbitee: planet, speed: 4};
+	this.components.add(new OrbiterComponent(params));	
+	this.components.add(new CircleColliderComponent({owner: this, diameter: 100}));
+}
+Kiwi.extend( Moon, Kiwi.GameObjects.Sprite);
+
+Moon.prototype.objType = function(){
+	return 'Moon'
 }
 
 var Sun = function( state, x, y, scale, textureKey ){
@@ -102,19 +110,18 @@ var Sun = function( state, x, y, scale, textureKey ){
 	this.scaleX = scale;
 	this.scaleY = scale;
 
-	this.center = new Kiwi.Geom.Point(0,0);
-
-	this.hitCircle = new Kiwi.Geom.Circle(this.x + this.width/2, this.y + this.height/2, 210);
+	var params = {owner: this, diameter: 210};
+	this.components.add(new CircleColliderComponent(params));
 }
 Kiwi.extend( Sun, Kiwi.GameObjects.Sprite );
 
 Sun.prototype.update = function(){
 	Kiwi.GameObjects.Sprite.prototype.update.call(this);
 
-	this.center.x = this.x + this.width * 0.5;
-	this.center.y = this.y + this.height * 0.5;
 	this.rotation += 0.02;
-	this.hitCircle.x = this.x + this.width/2;
-	this.hitCircle.y = this.y + this.height/2;	
+}
+
+Sun.prototype.objType = function(){
+	return 'Sun'
 }
 

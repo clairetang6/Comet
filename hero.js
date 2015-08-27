@@ -13,7 +13,13 @@ var Hero = function( state, x, y, name){
 	this.comet.animation.add('appledeath', [16,17,18,19,20,21,22,23], 0.05)
 	this.comet.name = name;
 	this.comet.animation.play(this.comet.name);
-	
+	this.comet.objType = function(){
+		return 'Comet';
+	}
+	this.comet.parent = this;
+	this.comet.components.add(new CircleColliderComponent({owner: this.comet, diameter: 50, isComet: true}));
+	this.hitCircle = this.comet.components.getComponent('CircleCollider').circle;
+		
 	this.tailGroup = new Kiwi.Group(state);
 
 	this.shadowScales = [0, 1];
@@ -38,14 +44,15 @@ var Hero = function( state, x, y, name){
 	
 	this.addChild(this.tailGroup);	
 	this.addChild(this.sparkGroup);
-	this.addChild(this.comet);
+	this.addChild(this.comet);	
 	
 	this.vx = 0;
 	this.vy = 0;
 	this.state = state;
 	
-	this.hitCircle = new Kiwi.Geom.Circle(this.comet.x + this.comet.width/2, this.comet.y + this.comet.height/2, 50);
+
 	this.isAlive = true;
+	console.log(this.hitCircle);
 }
 Kiwi.extend( Hero, Kiwi.Group );
 
@@ -123,23 +130,42 @@ Spark.prototype.setRandomAngle = function(){
 Hero.prototype.die = function(){
 	this.comet.animation.play(this.comet.name + 'death');
 	this.isAlive = false;
-	//do something with his tail. 
+	//do something with his tail.
+	this.tailGroup.visible = false;
 }
 
 Hero.prototype.checkCollisions = function(){
-	var sun = this.state.sun; 
-	if(this.hitCircle.distanceTo(sun.hitCircle) < (sun.hitCircle.radius + this.hitCircle.radius)){
-		if(this.isAlive){
-			this.die();
-		}
-	}else{
-		this.comet.animation.play('firechill');
-		this.isAlive = true;
+	var nebulasMatter = [this.state.sun, this.state.planet, this.state.moon];
+
+	var shouldDie = false;
+	for(var i = 0; i < nebulasMatter.length; i++){
+		if(this.hitCircle.distanceTo(nebulasMatter[i].hitCircle) < (nebulasMatter[i].hitCircle.radius + this.hitCircle.radius)){
+			shouldDie = true;
+			break;
+		}	
 	}
+	
+	if(this.isAlive && shouldDie){
+		this.die();
+		console.log('death');
+	}
+	
+	if(!this.isAlive && !shouldDie){
+		this.comet.animation.play('fire');	
+		console.log(this.comet.animation.currentAnimation.name);				
+		this.isAlive = true;
+		this.tailGroup.visible = true;	
+		console.log('life');		
+	}
+	
+	console.log(this.comet.animation.currentAnimation.name);
+
+
 }
 
 Hero.prototype.update = function(){
 	Kiwi.Group.prototype.update.call(this);
+	
 	
 	if(this.state.upKey.isDown){
 		if(this.vy > -50){
@@ -186,8 +212,9 @@ Hero.prototype.update = function(){
 		this.x += this.vx;
 	}
 	
-	this.hitCircle.x = this.x + this.comet.width/2;
-	this.hitCircle.y = this.y + this.comet.height/2;
-	
 	this.checkCollisions();
+}
+
+Hero.prototype.objType = function(){
+	return 'Hero'
 }

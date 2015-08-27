@@ -6,9 +6,10 @@ gameState.preload = function() {
 	
 	this.addImage('sun1', 'assets/suns/sun_red2_242.png')
 	this.addImage('sparkParticle', 'assets/sparks/spark_particle_1.png')
-	this.addImage('planet1', 'assets/planets/rock_13_118.png');
+	this.addImage('planet1', 'assets/planets/rock_47_118.png');
 	this.addImage('meteorite', 'assets/sparks/met_1.png');
 	this.addImage('redSpark', 'assets/sparks/red_fire_spark.png');
+	this.addImage('moon1', 'assets/planets/moon_8_76.png');
 }
 
 gameState.create = function() {
@@ -22,6 +23,7 @@ gameState.create = function() {
 	this.sun = new Sun(this, 200, 200, 1, 'sun1');
 	this.hero = new Hero(this, 100, 100, 'fire');
 	this.planet = new Planet(this, this.sun, 'planet1');
+	this.moon = new Moon(this, this.planet, 'moon1');
 	
 	this.backgroundSparkParticles = new Kiwi.Group(this);
 	for (var i = 0; i < 100; i++){
@@ -52,6 +54,7 @@ gameState.create = function() {
 
 	this.addChild(this.sun);
 	this.addChild(this.planet);
+	this.addChild(this.moon);
 	this.addChild(this.hero);	
 	this.addChild(this.foregroundSparkParticles);
 }
