@@ -56,8 +56,15 @@ Meteor.prototype.update = function(){
 	}
 }
 
-var Planet = function( state, sun, textureKey ){
-	Kiwi.GameObjects.Sprite.call( this, state, state.textures[textureKey], 0, 0, false);
+var Planet = function( state, sun){
+	var planetTypes = ['rock85', 'rock118', 'gas', 'ring']
+	var numbersOfPlanets = [10, 54 ,20, 18];
+	var randomPlanet = state.random.integerInRange(0, 3);
+	var planetType = planetTypes[randomPlanet];
+	var numberOfPlanets = numbersOfPlanets[randomPlanet];
+	Kiwi.GameObjects.Sprite.call( this, state, state.textures[planetType], 0, 0, false);
+	var planetNumber = state.random.integerInRange(0, numberOfPlanets-1);
+	this.animation.switchTo(planetNumber);
 	
 	this.state = state;
 	this.sun = sun;
@@ -87,8 +94,10 @@ Planet.prototype.objType = function(){
 	return 'Planet';
 }
 
-var Moon = function( state, planet, textureKey ){
-	Kiwi.GameObjects.Sprite.call(this, state, state.textures[textureKey], 0, 0, false);
+var Moon = function( state, planet){
+	Kiwi.GameObjects.Sprite.call(this, state, state.textures['moon'], 0, 0, false);
+	var moonNumber = state.random.integerInRange(0, 24);
+	this.animation.switchTo(moonNumber);
 	
 	var params = {owner: this, name: 'Orbiter', radius: 120, orbitee: planet, speed: 4};
 	this.components.add(new OrbiterComponent(params));	
@@ -100,8 +109,11 @@ Moon.prototype.objType = function(){
 	return 'Moon'
 }
 
-var Sun = function( state, x, y, scale, textureKey ){
-	Kiwi.GameObjects.Sprite.call( this, state, state.textures[textureKey], x, y, false);
+var Sun = function( state, x, y, scale){
+	Kiwi.GameObjects.Sprite.call( this, state, state.textures['sun'], x, y, false);
+	var sunNumber = state.random.integerInRange(0, 24);
+	console.log(sunNumber);
+	this.animation.switchTo(sunNumber);
 	this.state = state;
 	this.hero = this.state.hero;
 	this.rotPointX = this.width * 0.5;
@@ -124,4 +136,42 @@ Sun.prototype.update = function(){
 Sun.prototype.objType = function(){
 	return 'Sun'
 }
+
+var SolarSystem = function( state, x, y ){
+	Kiwi.Group.call(this, state);
+	this.state;
+	this.x = x;
+	this.y = y;
+	
+	this.sun = new Sun(state, 0, 0, 1);
+	this.planet = new Planet(state, this.sun);
+	this.moon = new Moon(state, this.planet);
+	
+	this.addChild(this.sun);
+	this.addChild(this.planet);
+	this.addChild(this.moon);
+	
+	this.moving = false;
+	this.movingOffscreen = false;
+}
+Kiwi.extend(SolarSystem, Kiwi.Group);
+
+SolarSystem.prototype.update = function(){
+	Kiwi.Group.prototype.update.call(this);
+	
+	if(this.moving || this.movingOffscreen){
+		this.x -= 10;
+	}
+	
+	if(this.x < 0){
+		this.moving = false;
+	}
+	
+	if(this.x < -2000){
+		this.movingOffscreen = false;
+		this.x = this.state.game.stage.width + 1000;
+	}
+}
+
+
 

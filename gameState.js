@@ -4,12 +4,17 @@ gameState.preload = function() {
 	Kiwi.State.prototype.preload.call(this);
 	this.addSpriteSheet('hero_spritesheet', 'assets/hero/hero_spritesheet.png', 232, 220);
 	
-	this.addImage('sun1', 'assets/suns/sun_red2_242.png')
 	this.addImage('sparkParticle', 'assets/sparks/spark_particle_1.png')
-	this.addImage('planet1', 'assets/planets/rock_47_118.png');
 	this.addImage('meteorite', 'assets/sparks/met_1.png');
 	this.addImage('redSpark', 'assets/sparks/red_fire_spark.png');
-	this.addImage('moon1', 'assets/planets/moon_8_76.png');
+	
+	this.addTextureAtlas('sun', 'assets/sun_spritesheet.png', 'sunJSON', 'assets/sun_spritesheet.json');
+	this.addTextureAtlas('ring', 'assets/ring_spritesheet.png', 'ringJSON', 'assets/ring_spritesheet.json');
+	this.addTextureAtlas('rock85', 'assets/rock85_spritesheet.png', 'rock85JSON', 'assets/rock85_spritesheet.json');
+	this.addTextureAtlas('rock118', 'assets/rock118_spritesheet.png', 'rock118JSON', 'assets/rock118_spritesheet.json');
+	this.addTextureAtlas('gas', 'assets/gas_spritesheet.png', 'gasJSON', 'assets/gas_spritesheet.json');
+	this.addTextureAtlas('moon', 'assets/moon_spritesheet.png', 'moonJSON', 'assets/moon_spritesheet.json');
+		
 }
 
 gameState.create = function() {
@@ -19,11 +24,15 @@ gameState.create = function() {
 	this.heros = ['blue', 'fire', 'apple']
 	this.heroIndex = 0;
 	
-	
-	this.sun = new Sun(this, 200, 200, 1, 'sun1');
 	this.hero = new Hero(this, 100, 100, 'fire');
-	this.planet = new Planet(this, this.sun, 'planet1');
-	this.moon = new Moon(this, this.planet, 'moon1');
+	
+	this.solarSystems = [];
+	for(var i = 0; i < 5; i++){
+		console.log(this.game.stage.width);
+		this.solarSystems.push(new SolarSystem(this, this.game.stage.width + 2000, 100))
+	}
+	this.solarIndex = 0;
+	
 	
 	this.backgroundSparkParticles = new Kiwi.Group(this);
 	for (var i = 0; i < 100; i++){
@@ -51,10 +60,9 @@ gameState.create = function() {
 
 	this.addChild(this.backgroundSparkParticles);
 	this.addChild(this.meteor);
-
-	this.addChild(this.sun);
-	this.addChild(this.planet);
-	this.addChild(this.moon);
+	for(var i = 0; i < this.solarSystems.length; i++){
+		this.addChild(this.solarSystems[i]);
+	}
 	this.addChild(this.hero);	
 	this.addChild(this.foregroundSparkParticles);
 }
@@ -62,6 +70,24 @@ gameState.create = function() {
 
 gameState.update = function() {
 	Kiwi.State.prototype.update.call(this);
+	
+	
+	var solarSystemMoving = false;
+	for(var i = 0; i < this.solarSystems.length; i++){
+		if ( this.solarSystems[i].moving){
+			solarSystemMoving = true;
+		}
+	}
+	
+	if(!solarSystemMoving){
+		this.solarSystems[this.solarIndex].moving = true;
+		this.solarSystems[this.solarIndex].movingOffscreen = true;
+		this.solarIndex = this.solarIndex + 1;
+		if(this.solarIndex >= this.solarSystems.length){
+			this.solarIndex = 0;
+		}
+	}
+	
 }
 
 gameState.updateHacked = function() {
