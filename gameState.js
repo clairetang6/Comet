@@ -92,6 +92,22 @@ gameState.update = function() {
 
 gameState.updateHacked = function() {
 	Kiwi.State.prototype.update.call(this);
+	
+	var solarSystemMoving = false;
+	for(var i = 0; i < this.solarSystems.length; i++){
+		if ( this.solarSystems[i].moving){
+			solarSystemMoving = true;
+		}
+	}
+	
+	if(!solarSystemMoving){
+		this.solarSystems[this.solarIndex].moving = true;
+		this.solarSystems[this.solarIndex].movingOffscreen = true;
+		this.solarIndex = this.solarIndex + 1;
+		if(this.solarIndex >= this.solarSystems.length){
+			this.solarIndex = 0;
+		}
+	}	
 }
 gameState.onKeyDownCallback = function(keyCode){
 	if(keyCode == this.debugKey.keyCode){

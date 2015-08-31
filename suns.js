@@ -62,11 +62,13 @@ var Planet = function( state, sun){
 	var randomPlanet = state.random.integerInRange(0, 3);
 	var planetType = planetTypes[randomPlanet];
 	var numberOfPlanets = numbersOfPlanets[randomPlanet];
+
 	Kiwi.GameObjects.Sprite.call( this, state, state.textures[planetType], 0, 0, false);
-	var planetNumber = state.random.integerInRange(0, numberOfPlanets-1);
-	this.animation.switchTo(planetNumber);
-	
 	this.state = state;
+	var planetNumber = this.state.random.integerInRange(0, numberOfPlanets-1);
+	this.animation.switchTo(planetNumber);	
+		
+	this.randomizeSprite();
 	this.sun = sun;
 	this.rotPointX = this.width * 0.5;
 	this.rotPointY = this.height * 0.5;	
@@ -94,12 +96,24 @@ Planet.prototype.objType = function(){
 	return 'Planet';
 }
 
+Planet.prototype.randomizeSprite = function(){
+
+}
+
+Planet.prototype.randomizeOrbitingSpeed = function(){
+	var newSpeed = this.state.random.integerInRange(1, 6)/2;
+	var directions = [-1, 1]
+	var newDirection = directions[this.state.random.integerInRange(0,1)]
+	this.components.getComponent('Orbiter').speed = newSpeed * newDirection;
+}
+
 var Moon = function( state, planet){
 	Kiwi.GameObjects.Sprite.call(this, state, state.textures['moon'], 0, 0, false);
-	var moonNumber = state.random.integerInRange(0, 24);
-	this.animation.switchTo(moonNumber);
+	this.state = state;
+
+	this.randomizeSprite();
 	
-	var params = {owner: this, name: 'Orbiter', radius: 120, orbitee: planet, speed: 4};
+	var params = {owner: this, name: 'Orbiter', radius: 120, orbitee: planet, speed: 10};
 	this.components.add(new OrbiterComponent(params));	
 	this.components.add(new CircleColliderComponent({owner: this, diameter: 100}));
 }
@@ -109,12 +123,23 @@ Moon.prototype.objType = function(){
 	return 'Moon'
 }
 
+Moon.prototype.randomizeOrbitingSpeed = function(){
+	var newSpeed = this.state.random.integerInRange(4, 10);
+	var directions = [-1, 1]
+	var newDirection = directions[this.state.random.integerInRange(0,1)]
+	this.components.getComponent('Orbiter').speed = newSpeed * newDirection;
+}
+
+Moon.prototype.randomizeSprite = function(){
+	var moonNumber = this.state.random.integerInRange(0, 24);
+	this.animation.switchTo(moonNumber);	
+}
+
 var Sun = function( state, x, y, scale){
 	Kiwi.GameObjects.Sprite.call( this, state, state.textures['sun'], x, y, false);
-	var sunNumber = state.random.integerInRange(0, 24);
-	console.log(sunNumber);
-	this.animation.switchTo(sunNumber);
 	this.state = state;
+	
+	this.randomizeSprite();
 	this.hero = this.state.hero;
 	this.rotPointX = this.width * 0.5;
 	this.rotPointY = this.height * 0.5;
@@ -126,6 +151,11 @@ var Sun = function( state, x, y, scale){
 	this.components.add(new CircleColliderComponent(params));
 }
 Kiwi.extend( Sun, Kiwi.GameObjects.Sprite );
+
+Sun.prototype.randomizeSprite = function(){
+	var sunNumber = this.state.random.integerInRange(0, 24);
+	this.animation.switchTo(sunNumber);	
+}
 
 Sun.prototype.update = function(){
 	Kiwi.GameObjects.Sprite.prototype.update.call(this);
@@ -170,6 +200,10 @@ SolarSystem.prototype.update = function(){
 	if(this.x < -2000){
 		this.movingOffscreen = false;
 		this.x = this.state.game.stage.width + 1000;
+		this.planet.randomizeOrbitingSpeed();
+		this.moon.randomizeSprite();
+		this.sun.randomizeSprite();
+		this.moon.randomizeOrbitingSpeed();
 	}
 }
 

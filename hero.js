@@ -135,15 +135,22 @@ Hero.prototype.die = function(){
 }
 
 Hero.prototype.checkCollisions = function(){
-	//var nebulasMatter = [this.state.solarSystem.sun, this.state.solarSystem.planet, this.state.solarSystem.moon];
-
+	var nebulasMatter = [];
+	for(var i = 0; i < this.state.solarSystems.length; i++){
+		if(this.state.solarSystems[i].moving || this.state.solarSystems[i].movingOffscreen){
+			nebulasMatter = nebulasMatter.concat(this.state.solarSystems[i].members);
+		}
+	}
+	
+	console.log(nebulasMatter);
+	
 	var shouldDie = false;
-	//for(var i = 0; i < nebulasMatter.length; i++){
-	//	if(this.hitCircle.distanceTo(nebulasMatter[i].hitCircle) < (nebulasMatter[i].hitCircle.radius + this.hitCircle.radius)){
-	//		shouldDie = true;
-	//		break;
-	//	}	
-	//}
+	for(var i = 0; i < nebulasMatter.length; i++){
+		if(this.hitCircle.distanceTo(nebulasMatter[i].hitCircle) < (nebulasMatter[i].hitCircle.radius + this.hitCircle.radius)){
+			shouldDie = true;
+			break;
+		}	
+	}
 	
 	if(this.isAlive && shouldDie){
 		this.die();
