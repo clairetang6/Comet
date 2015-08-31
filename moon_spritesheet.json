@@ -1,0 +1,264 @@
+{"frames": [
+
+{
+	"filename": "moon_10_76.png",
+	"frame": {"x":2,"y":2,"w":78,"h":76},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":78,"h":76},
+	"sourceSize": {"w":78,"h":76},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "moon_11_76.png",
+	"frame": {"x":82,"y":2,"w":78,"h":76},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":78,"h":76},
+	"sourceSize": {"w":78,"h":76},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "moon_12_76.png",
+	"frame": {"x":162,"y":2,"w":78,"h":76},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":78,"h":76},
+	"sourceSize": {"w":78,"h":76},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "moon_13_76.png",
+	"frame": {"x":242,"y":2,"w":78,"h":76},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":78,"h":76},
+	"sourceSize": {"w":78,"h":76},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "moon_14_76.png",
+	"frame": {"x":322,"y":2,"w":78,"h":76},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":78,"h":76},
+	"sourceSize": {"w":78,"h":76},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "moon_15_76.png",
+	"frame": {"x":402,"y":2,"w":78,"h":76},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":78,"h":76},
+	"sourceSize": {"w":78,"h":76},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "moon_16_76.png",
+	"frame": {"x":482,"y":2,"w":78,"h":76},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":78,"h":76},
+	"sourceSize": {"w":78,"h":76},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "moon_17_76.png",
+	"frame": {"x":562,"y":2,"w":78,"h":76},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":78,"h":76},
+	"sourceSize": {"w":78,"h":76},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "moon_18_76.png",
+	"frame": {"x":642,"y":2,"w":78,"h":76},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":78,"h":76},
+	"sourceSize": {"w":78,"h":76},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "moon_19_76.png",
+	"frame": {"x":722,"y":2,"w":78,"h":76},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":78,"h":76},
+	"sourceSize": {"w":78,"h":76},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "moon_1_76.png",
+	"frame": {"x":802,"y":2,"w":78,"h":76},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":78,"h":76},
+	"sourceSize": {"w":78,"h":76},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "moon_20_76.png",
+	"frame": {"x":2,"y":80,"w":78,"h":76},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":78,"h":76},
+	"sourceSize": {"w":78,"h":76},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "moon_21_76.png",
+	"frame": {"x":82,"y":80,"w":78,"h":76},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":78,"h":76},
+	"sourceSize": {"w":78,"h":76},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "moon_22_76.png",
+	"frame": {"x":162,"y":80,"w":76,"h":76},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":76,"h":76},
+	"sourceSize": {"w":76,"h":76},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "moon_23_76.png",
+	"frame": {"x":240,"y":80,"w":78,"h":76},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":78,"h":76},
+	"sourceSize": {"w":78,"h":76},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "moon_24_76.png",
+	"frame": {"x":320,"y":80,"w":78,"h":76},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":78,"h":76},
+	"sourceSize": {"w":78,"h":76},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "moon_25_76.png",
+	"frame": {"x":400,"y":80,"w":76,"h":76},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":76,"h":76},
+	"sourceSize": {"w":76,"h":76},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "moon_2_76.png",
+	"frame": {"x":478,"y":80,"w":78,"h":76},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":78,"h":76},
+	"sourceSize": {"w":78,"h":76},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "moon_3_76.png",
+	"frame": {"x":558,"y":80,"w":78,"h":76},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":78,"h":76},
+	"sourceSize": {"w":78,"h":76},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "moon_4_76.png",
+	"frame": {"x":638,"y":80,"w":78,"h":76},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":78,"h":76},
+	"sourceSize": {"w":78,"h":76},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "moon_5_76.png",
+	"frame": {"x":718,"y":80,"w":78,"h":76},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":78,"h":76},
+	"sourceSize": {"w":78,"h":76},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "moon_6_76.png",
+	"frame": {"x":798,"y":80,"w":78,"h":76},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":78,"h":76},
+	"sourceSize": {"w":78,"h":76},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "moon_7_76.png",
+	"frame": {"x":2,"y":158,"w":78,"h":76},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":78,"h":76},
+	"sourceSize": {"w":78,"h":76},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "moon_8_76.png",
+	"frame": {"x":82,"y":158,"w":78,"h":76},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":78,"h":76},
+	"sourceSize": {"w":78,"h":76},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "moon_9_76.png",
+	"frame": {"x":162,"y":158,"w":78,"h":76},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":78,"h":76},
+	"sourceSize": {"w":78,"h":76},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "moon_explosion1_107.png",
+	"frame": {"x":242,"y":158,"w":107,"h":107},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":107,"h":107},
+	"sourceSize": {"w":107,"h":107},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "moon_explosion2_180.png",
+	"frame": {"x":351,"y":158,"w":180,"h":180},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":180,"h":180},
+	"sourceSize": {"w":180,"h":180},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "moon_explosion3_300.png",
+	"frame": {"x":533,"y":158,"w":300,"h":300},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":300,"h":300},
+	"sourceSize": {"w":300,"h":300},
+	"pivot": {"x":0.5,"y":0.5}
+}],
+"meta": {
+	"app": "http://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "moon_spritesheet.png",
+	"format": "RGBA8888",
+	"size": {"w":882,"h":460},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:02f9a53da3f0b2be725e624fc1ab2951:dacfde8afc06113762dc3c482f3b6709:6d434fc1e38402a09d9f037cb0558107$"
+}
+}
