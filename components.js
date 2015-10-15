@@ -30,6 +30,14 @@ OrbiterComponent.prototype.update = function() {
 var CircleColliderComponent = function(params){
 	Kiwi.Component.call( this, params.owner, 'CircleCollider');
 	
+	this.debugCircle = new Kiwi.Plugins.Primitives.Ellipse( {
+		state: params.owner.state,
+		radius: params.diameter/2,
+		segments: 16,
+		centerOnTransform: true,
+		alpha: 0.3
+	} );
+	
 	this.isComet = params.isComet;
 	
 	if(params.isComet && this.owner.parent){
@@ -56,6 +64,9 @@ CircleColliderComponent.prototype.update = function(){
 		this.circle.x = this.owner.parent.x + this.owner.x + this.owner.width/2;
 		this.circle.y = this.owner.parent.y + this.owner.y + this.owner.height/2;
 	}
+	
+	this.debugCircle.x = this.circle.x;
+	this.debugCircle.y = this.circle.y;
 
 }
 

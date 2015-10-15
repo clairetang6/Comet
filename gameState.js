@@ -63,7 +63,8 @@ gameState.create = function() {
 	for(var i = 0; i < this.solarSystems.length; i++){
 		this.addChild(this.solarSystems[i]);
 	}
-	this.addChild(this.hero);	
+	this.addChild(this.hero);
+	this.addChild(this.hero.comet.components.getComponent('CircleCollider').debugCircle);
 	this.addChild(this.foregroundSparkParticles);
 }
 

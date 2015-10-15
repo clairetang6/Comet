@@ -154,20 +154,15 @@ Hero.prototype.checkCollisions = function(){
 	
 	if(this.isAlive && shouldDie){
 		this.die();
-		console.log('death');
 	}
 	
 	if(!this.isAlive && !shouldDie){
 		this.comet.animation.play('fire');	
-		console.log(this.comet.animation.currentAnimation.name);				
+
 		this.isAlive = true;
 		this.tailGroup.visible = true;	
-		console.log('life');		
+
 	}
-	
-	console.log(this.comet.animation.currentAnimation.name);
-
-
 }
 
 Hero.prototype.update = function(){
