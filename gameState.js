@@ -50,6 +50,10 @@ gameState.create = function() {
 	this.pauseKey = this.game.input.keyboard.addKey(Kiwi.Input.Keycodes.P);
 	this.debugKey = this.game.input.keyboard.addKey(Kiwi.Input.Keycodes.I);
 	this.dieKey = this.game.input.keyboard.addKey(Kiwi.Input.Keycodes.D);
+	
+	this.aKey = this.game.input.keyboard.addKey(Kiwi.Input.Keycodes.A);
+	this.zKey = this.game.input.keyboard.addKey(Kiwi.Input.Keycodes.Z);
+	
 	this.game.input.keyboard.onKeyDown.add(this.onKeyDownCallback, this);
 	
 	this.upKey = this.game.input.keyboard.addKey(Kiwi.Input.Keycodes.UP);
@@ -66,27 +70,39 @@ gameState.create = function() {
 	this.addChild(this.hero);
 	this.addChild(this.hero.comet.components.getComponent('CircleCollider').debugCircle);
 	this.addChild(this.foregroundSparkParticles);
+	
+	this.debugSpeedIndex = 0;
+	this.debugSpeed = 10; 
 }
 
 
 gameState.update = function() {
-	Kiwi.State.prototype.update.call(this);
 	
-	
-	var solarSystemMoving = false;
-	for(var i = 0; i < this.solarSystems.length; i++){
-		if ( this.solarSystems[i].moving){
-			solarSystemMoving = true;
+	if(this.debugSpeedIndex == 0){
+		
+		Kiwi.State.prototype.update.call(this);
+		
+		
+		var solarSystemMoving = false;
+		for(var i = 0; i < this.solarSystems.length; i++){
+			if ( this.solarSystems[i].moving){
+				solarSystemMoving = true;
+			}
 		}
+		
+		if(!solarSystemMoving){
+			this.solarSystems[this.solarIndex].moving = true;
+			this.solarSystems[this.solarIndex].movingOffscreen = true;
+			this.solarIndex = this.solarIndex + 1;
+			if(this.solarIndex >= this.solarSystems.length){
+				this.solarIndex = 0;
+			}
+		}
+
 	}
-	
-	if(!solarSystemMoving){
-		this.solarSystems[this.solarIndex].moving = true;
-		this.solarSystems[this.solarIndex].movingOffscreen = true;
-		this.solarIndex = this.solarIndex + 1;
-		if(this.solarIndex >= this.solarSystems.length){
-			this.solarIndex = 0;
-		}
+	this.debugSpeedIndex = this.debugSpeedIndex + 1;				
+	if(this.debugSpeedIndex > this.debugSpeed - 1){
+		this.debugSpeedIndex = 0;
 	}
 	
 }
@@ -110,6 +126,7 @@ gameState.updateHacked = function() {
 		}
 	}	
 }
+
 gameState.onKeyDownCallback = function(keyCode){
 	if(keyCode == this.debugKey.keyCode){
 		gameState.updateHacked();
@@ -117,5 +134,16 @@ gameState.onKeyDownCallback = function(keyCode){
 	
 	if(keyCode == this.dieKey.keyCode){
 		this.hero.die();
+	}
+	
+	if(keyCode == this.aKey.keyCode){
+		this.debugSpeed++; 
+	}
+	
+	if(keyCode == this.zKey.keyCode){
+		this.debugSpeed--;
+		if(this.debugSpeed < 1){
+			this.debugSpeed = 1;
+		}
 	}
 }
