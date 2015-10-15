@@ -180,7 +180,7 @@ var SolarSystem = function( state, x, y ){
 	this.addChild(this.sun);
 	this.addChild(this.planet);
 	this.addChild(this.moon);
-	
+		
 	this.moving = false;
 	this.movingOffscreen = false;
 }
@@ -205,6 +205,12 @@ SolarSystem.prototype.update = function(){
 		this.sun.randomizeSprite();
 		this.moon.randomizeOrbitingSpeed();
 	}
+}
+
+SolarSystem.prototype.addDebugCircles = function(){
+	this.state.debugGroup.addChild(this.sun.components.getComponent('CircleCollider').debugCircle);
+	this.state.debugGroup.addChild(this.planet.components.getComponent('CircleCollider').debugCircle);
+	this.state.debugGroup.addChild(this.moon.components.getComponent('CircleCollider').debugCircle);	
 }
 
 

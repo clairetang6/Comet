@@ -46,6 +46,8 @@ gameState.create = function() {
 	
 	this.meteor = new Meteor(this);
 	
+	this.debugGroup = new Kiwi.Group(this);
+	
 	
 	this.pauseKey = this.game.input.keyboard.addKey(Kiwi.Input.Keycodes.P);
 	this.debugKey = this.game.input.keyboard.addKey(Kiwi.Input.Keycodes.I);
@@ -53,6 +55,7 @@ gameState.create = function() {
 	
 	this.aKey = this.game.input.keyboard.addKey(Kiwi.Input.Keycodes.A);
 	this.zKey = this.game.input.keyboard.addKey(Kiwi.Input.Keycodes.Z);
+	this.hKey = this.game.input.keyboard.addKey(Kiwi.Input.Keycodes.H);
 	this.debugSpeedIndex = 0;
 	this.debugSpeed = 10; 
 	
@@ -73,8 +76,10 @@ gameState.create = function() {
 		this.solarSystems[i].addDebugCircles();
 	}
 	this.addChild(this.hero);
-	this.addChild(this.hero.comet.components.getComponent('CircleCollider').debugCircle);
+	this.debugGroup.addChild(this.hero.comet.components.getComponent('CircleCollider').debugCircle);
 	this.addChild(this.foregroundSparkParticles);
+	
+	this.addChild(this.debugGroup);
 }
 
 
@@ -165,5 +170,9 @@ gameState.onKeyDownCallback = function(keyCode){
 		if(!this.isPaused){
 			this.debugSpeed = 180;
 		}
+	}
+	
+	if(keyCode == this.hKey.keyCode){
+		this.debugGroup.visible = !this.debugGroup.visible;
 	}
 }
