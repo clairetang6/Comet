@@ -53,7 +53,11 @@ gameState.create = function() {
 	
 	this.aKey = this.game.input.keyboard.addKey(Kiwi.Input.Keycodes.A);
 	this.zKey = this.game.input.keyboard.addKey(Kiwi.Input.Keycodes.Z);
+	this.debugSpeedIndex = 0;
+	this.debugSpeed = 10; 
 	
+	this.isPaused = false;
+		
 	this.game.input.keyboard.onKeyDown.add(this.onKeyDownCallback, this);
 	
 	this.upKey = this.game.input.keyboard.addKey(Kiwi.Input.Keycodes.UP);
@@ -66,17 +70,18 @@ gameState.create = function() {
 	this.addChild(this.meteor);
 	for(var i = 0; i < this.solarSystems.length; i++){
 		this.addChild(this.solarSystems[i]);
+		this.solarSystems[i].addDebugCircles();
 	}
 	this.addChild(this.hero);
 	this.addChild(this.hero.comet.components.getComponent('CircleCollider').debugCircle);
 	this.addChild(this.foregroundSparkParticles);
-	
-	this.debugSpeedIndex = 0;
-	this.debugSpeed = 10; 
 }
 
 
 gameState.update = function() {
+	if(this.isPaused){
+		this.debugSpeedIndex = 1;
+	}
 	
 	if(this.debugSpeedIndex == 0){
 		
@@ -104,6 +109,9 @@ gameState.update = function() {
 	if(this.debugSpeedIndex > this.debugSpeed - 1){
 		this.debugSpeedIndex = 0;
 	}
+	
+	
+	
 	
 }
 
@@ -141,9 +149,21 @@ gameState.onKeyDownCallback = function(keyCode){
 	}
 	
 	if(keyCode == this.zKey.keyCode){
-		this.debugSpeed--;
+		
+		if(this.debugSpeed < 30){
+			this.debugSpeed--;
+		}else{
+			this.debugSpeed -= 10;
+		}
 		if(this.debugSpeed < 1){
 			this.debugSpeed = 1;
+		}
+	}
+	
+	if(keyCode == this.pauseKey.keyCode){
+		this.isPaused = !this.isPaused;
+		if(!this.isPaused){
+			this.debugSpeed = 180;
 		}
 	}
 }
