@@ -46,6 +46,9 @@ gameState.create = function() {
 	
 	this.meteor = new Meteor(this);
 	
+	this.score = 0;
+	this.scoreCounter = new Kiwi.GameObjects.TextField(this, this.score, 0, 0, "#ffffff");
+	
 	this.debugGroup = new Kiwi.Group(this);
 	
 	
@@ -57,7 +60,7 @@ gameState.create = function() {
 	this.zKey = this.game.input.keyboard.addKey(Kiwi.Input.Keycodes.Z);
 	this.hKey = this.game.input.keyboard.addKey(Kiwi.Input.Keycodes.H);
 	this.debugSpeedIndex = 0;
-	this.debugSpeed = 10; 
+	this.debugSpeed = 1; 
 	
 	this.isPaused = false;
 		
@@ -80,6 +83,7 @@ gameState.create = function() {
 	this.addChild(this.foregroundSparkParticles);
 	
 	this.addChild(this.debugGroup);
+	this.addChild(this.scoreCounter);
 }
 
 
@@ -88,10 +92,14 @@ gameState.update = function() {
 		this.debugSpeedIndex = 1;
 	}
 	
-	if(this.debugSpeedIndex == 0){
-		
+	if(this.debugSpeedIndex == 0){	
 		Kiwi.State.prototype.update.call(this);
 		
+		if(!this.hero.isAlive){
+			this.score = 0;
+		}
+		this.scoreCounter.text = this.score;
+		this.score += 1;
 		
 		var solarSystemMoving = false;
 		for(var i = 0; i < this.solarSystems.length; i++){
@@ -114,10 +122,7 @@ gameState.update = function() {
 	if(this.debugSpeedIndex > this.debugSpeed - 1){
 		this.debugSpeedIndex = 0;
 	}
-	
-	
-	
-	
+		
 }
 
 gameState.updateHacked = function() {
