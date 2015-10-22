@@ -90,6 +90,7 @@ gameState.create = function() {
 	
 	this.addChild(this.plasmaGroup);
 	
+	this.debugGroup.visible = false;
 	this.addChild(this.debugGroup);
 	this.addChild(this.scoreCounter);
 }
