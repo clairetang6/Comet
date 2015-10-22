@@ -108,7 +108,6 @@ gameState.update = function() {
 			this.score = 0;
 		}
 		this.scoreCounter.text = this.score;
-		this.score += 1;
 		
 		var solarSystemMoving = false;
 		for(var i = 0; i < this.solarSystems.length; i++){
@@ -131,7 +130,6 @@ gameState.update = function() {
 	if(this.debugSpeedIndex > this.debugSpeed - 1){
 		this.debugSpeedIndex = 0;
 	}
-		
 }
 
 gameState.updateHacked = function() {

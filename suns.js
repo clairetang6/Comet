@@ -33,11 +33,11 @@ var Plasma = function( state, color ){
 	
 	this.color = color;
 	this.animation.add('blue', [0], 0.1);
-	this.animation.add('bluedestroy', [0,1,2,3], 0.1);
+	this.animation.add('bluedestroy', [0,1,2,2,3,3,3], 0.05);
 	this.animation.add('green', [4], 0.1);
-	this.animation.add('greendestroy', [4,5,6,7], 0.1);
+	this.animation.add('greendestroy', [4,5,6,6,7,7,7], 0.05);
 	this.animation.add('red', [8], 0.1);
-	this.animation.add('reddestroy', [8,9,10,11], 0.1);
+	this.animation.add('reddestroy', [8,9,10,10,11,11,11], 0.05);
 	
 	this.animation.play(this.color);
 	
@@ -45,8 +45,9 @@ var Plasma = function( state, color ){
 	this.animation.getAnimation('greendestroy').onComplete.add(this.onCollected, this);
 	this.animation.getAnimation('reddestroy').onComplete.add(this.onCollected, this);	
 	
-	this.components.add(new CircleColliderComponent({owner: this, diameter: 40}));	
+	this.components.add(new CircleColliderComponent({owner: this, diameter: 50}));	
 	this.hitCircle = this.components.getComponent('CircleCollider').circle;
+	this.randomStartingLocation();
 }
 Kiwi.extend(Plasma, Kiwi.GameObjects.Sprite);
 
@@ -54,11 +55,26 @@ Plasma.prototype.update = function(){
 	Kiwi.GameObjects.Sprite.prototype.update.call(this);
 	
 	this.rotation += 0.02;
+	
+	this.x -= 3; 
+	if(this.x < -100){
+		this.randomStartingLocation();
+	}
+}
+
+Plasma.prototype.randomStartingLocation = function(){
+	this.visible = true;
+	this.active = true;
+	this.x = this.state.game.stage.width + 250;
+	this.y = this.state.random.integerInRange(10, this.state.game.stage.height-100);	
+	this.animation.play(this.color);
 }
 
 Plasma.prototype.onCollected = function(){
 	this.visible = false;
 	this.active = false;
+	this.state.score += 1;
+	this.randomStartingLocation();
 }
 
 var Meteor = function( state ){
