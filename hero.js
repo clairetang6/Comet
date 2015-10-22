@@ -204,8 +204,8 @@ Hero.prototype.update = function(){
 	
 	
 	this.y += this.vy; 
-	if(this.y < -100){
-		this.y = this.state.game.stage.height - this.height;
+	if(this.y < -180){
+		this.y = this.state.game.stage.height;
 	}else if(this.y > this.state.game.stage.height){
 		this.y = -100;
 	}
