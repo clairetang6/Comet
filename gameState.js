@@ -4,6 +4,8 @@ gameState.preload = function() {
 	Kiwi.State.prototype.preload.call(this);
 	this.addSpriteSheet('hero_spritesheet', 'assets/hero/hero_spritesheet.png', 232, 220);
 	
+	this.addSpriteSheet('plasma_spritesheet', 'assets/plasma_spritesheet.png', 75, 75);
+	
 	this.addImage('sparkParticle', 'assets/sparks/spark_particle_1.png')
 	this.addImage('meteorite', 'assets/sparks/met_1.png');
 	this.addImage('redSpark', 'assets/sparks/red_fire_spark.png');
@@ -46,6 +48,9 @@ gameState.create = function() {
 	
 	this.meteor = new Meteor(this);
 	
+	this.plasmaGroup = new Kiwi.Group(this);
+	this.plasmaGroup.addChild(new Plasma(this, 'red'));
+	
 	this.score = 0;
 	this.scoreCounter = new Kiwi.GameObjects.TextField(this, this.score, 0, 0, "#ffffff");
 	
@@ -80,7 +85,10 @@ gameState.create = function() {
 	}
 	this.addChild(this.hero);
 	this.debugGroup.addChild(this.hero.comet.components.getComponent('CircleCollider').debugCircle);
+
 	this.addChild(this.foregroundSparkParticles);
+	
+	this.addChild(this.plasmaGroup);
 	
 	this.addChild(this.debugGroup);
 	this.addChild(this.scoreCounter);

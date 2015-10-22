@@ -15,7 +15,7 @@ var SparkParticle = function( state , forBackground){
 
 	
 }
-Kiwi.extend( SparkParticle, Kiwi.GameObjects.Sprite );
+Kiwi.extend(SparkParticle, Kiwi.GameObjects.Sprite);
 
 SparkParticle.prototype.update = function(){
 	Kiwi.GameObjects.Sprite.prototype.update.call(this);
@@ -26,6 +26,39 @@ SparkParticle.prototype.update = function(){
 		this.x = this.state.game.stage.width + 200;
 		this.y = this.state.random.integerInRange(0, this.state.game.stage.height);	
 	}
+}
+
+var Plasma = function( state, color ){
+	Kiwi.GameObjects.Sprite.call(this, state, state.textures['plasma_spritesheet'], 100, 100, true);
+	
+	this.color = color;
+	this.animation.add('blue', [0], 0.1);
+	this.animation.add('bluedestroy', [0,1,2,3], 0.1);
+	this.animation.add('green', [4], 0.1);
+	this.animation.add('greendestroy', [4,5,6,7], 0.1);
+	this.animation.add('red', [8], 0.1);
+	this.animation.add('reddestroy', [8,9,10,11], 0.1);
+	
+	this.animation.play(this.color);
+	
+	this.animation.getAnimation('bluedestroy').onComplete.add(this.onCollected, this);
+	this.animation.getAnimation('greendestroy').onComplete.add(this.onCollected, this);
+	this.animation.getAnimation('reddestroy').onComplete.add(this.onCollected, this);	
+	
+	this.components.add(new CircleColliderComponent({owner: this, diameter: 40}));	
+	this.hitCircle = this.components.getComponent('CircleCollider').circle;
+}
+Kiwi.extend(Plasma, Kiwi.GameObjects.Sprite);
+
+Plasma.prototype.update = function(){
+	Kiwi.GameObjects.Sprite.prototype.update.call(this);
+	
+	this.rotation += 0.02;
+}
+
+Plasma.prototype.onCollected = function(){
+	this.visible = false;
+	this.active = false;
 }
 
 var Meteor = function( state ){

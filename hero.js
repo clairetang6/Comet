@@ -142,8 +142,6 @@ Hero.prototype.checkCollisions = function(){
 		}
 	}
 	
-	console.log(nebulasMatter);
-	
 	var shouldDie = false;
 	for(var i = 0; i < nebulasMatter.length; i++){
 		if(this.hitCircle.distanceTo(nebulasMatter[i].hitCircle) < (nebulasMatter[i].hitCircle.radius + this.hitCircle.radius)){
@@ -162,6 +160,20 @@ Hero.prototype.checkCollisions = function(){
 		this.isAlive = true;
 		this.tailGroup.visible = true;	
 
+	}
+}
+
+Hero.prototype.checkCollisionsPlasma = function(){
+	var plasmas = this.state.plasmaGroup.members;
+	
+	for (var i = 0; i < plasmas.length; i++){
+		if(this.hitCircle.distanceTo(plasmas[i].hitCircle) <  (plasmas[i].hitCircle.radius + this.hitCircle.radius)){
+			var animationName = plasmas[i].animation.currentAnimation.name;
+			if(animationName.substr(animationName.length -7) != 'destroy'){
+				plasmas[i].animation.play(plasmas[i].color + 'destroy');
+								
+			}
+		}
 	}
 }
 
@@ -215,6 +227,7 @@ Hero.prototype.update = function(){
 	}
 	
 	this.checkCollisions();
+	this.checkCollisionsPlasma();
 }
 
 Hero.prototype.objType = function(){
