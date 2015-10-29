@@ -3,6 +3,12 @@ var Hero = function( state, x, y, name){
 	this.x = x; 
 	this.y = y;
 	
+	this.buffer = [];
+	for (var i = 0; i < 60; i++){
+		this.buffer.push(0);
+	}
+	this.bufferIndex = 0;
+	
 	this.comet = new Kiwi.GameObjects.Sprite( state, state.textures['hero_spritesheet'], 0, 0, false);
 	this.comet.animation.add('blue', [0], 0.1);
 	this.comet.animation.add('bluedeath', [0,1,2,3,4,5,6,7], 0.05);
@@ -22,16 +28,16 @@ var Hero = function( state, x, y, name){
 		
 	this.tailGroup = new Kiwi.Group(state);
 
-	this.shadowScales = [0, 1];
-	this.shadowAlphas = [0, 1];
-	this.shadowOffsets = [0, 300];
-	this.numberOfShadows = 60;
-	for (var i = 0; i < this.numberOfShadows; i++){
-		var cometShadow = new CometShadow( state, this, i);
-		cometShadow.scale = (1 - i/this.numberOfShadows);
-		cometShadow.alpha = (1 - i/this.numberOfShadows); 
-		cometShadow.x = (0 - (6*i));
-		this.tailGroup.addChild(cometShadow);
+	this.tailScales = [0, 1];
+	this.tailAlphas = [0, 1];
+
+	this.numberOfTailPieces = 60;
+	for (var i = 0; i < this.numberOfTailPieces; i++){
+		var tailPiece = new TailPiece( state, this, i);
+		tailPiece.scale = (1 - i/this.numberOfTailPieces);
+		tailPiece.alpha = (1 - i/this.numberOfTailPieces); 
+		tailPiece.x = (0 - (6*i));
+		this.tailGroup.addChild(tailPiece);
 	}
 	
 	this.sparkGroup = new Kiwi.Group(state);
@@ -56,7 +62,7 @@ var Hero = function( state, x, y, name){
 }
 Kiwi.extend( Hero, Kiwi.Group );
 
-var CometShadow = function( state , hero, index ){
+var TailPiece = function( state , hero, index ){
 	Kiwi.GameObjects.Sprite.call(this, state, state.textures['hero_spritesheet'], 0, 3, false);	
 	
 	this.hero = hero; 
@@ -67,22 +73,27 @@ var CometShadow = function( state , hero, index ){
 	this.animation.add('appletail', [23], 0.1, false);
 	this.animation.play(this.hero.comet.name + 'tail');
 }
-Kiwi.extend( CometShadow, Kiwi.GameObjects.Sprite);
+Kiwi.extend( TailPiece, Kiwi.GameObjects.Sprite);
 
-CometShadow.prototype.update = function(){
+TailPiece.prototype.update = function(){
 	Kiwi.GameObjects.Sprite.prototype.update.call(this);
 	
 	this.index = this.index + 1; 
-	if(this.index >= this.hero.numberOfShadows -1){
+	if(this.index >= this.hero.numberOfTailPieces -1){
 		this.index = 0;
 	}
 		
 	this.y = this.hero.vy * this.index * 0.04;
-	this.y -= this.hero.vy * Math.pow(this.index * 0.08, 2);
+	
+	var bufferIndex = this.hero.bufferIndex - this.index; 
+	if(bufferIndex < 0){
+		bufferIndex += this.hero.buffer.length;
+	}
+	this.y -= this.hero.buffer[bufferIndex] * 20;
 
-	this.alpha = 1 - this.index/this.hero.numberOfShadows;
-	this.scaleX = 1 - this.index/this.hero.numberOfShadows;
-	this.scaleY = 1 - this.index/this.hero.numberOfShadows;
+	this.alpha = 1 - this.index/this.hero.numberOfTailPieces;
+	this.scaleX = 1 - this.index/this.hero.numberOfTailPieces;
+	this.scaleY = 1 - this.index/this.hero.numberOfTailPieces;
 
 	this.x = 0 - (6*this.index);
 	this.x -= this.hero.vx * Math.pow(this.index * 0.08, 2);
@@ -134,6 +145,77 @@ Hero.prototype.die = function(){
 	this.tailGroup.visible = false;
 }
 
+Hero.prototype.update = function(){
+	Kiwi.Group.prototype.update.call(this);
+	
+	this.bufferIndex += 1;
+	if(this.bufferIndex > this.buffer.length - 1){
+		this.bufferIndex = 0;
+	}	
+		
+	if(this.state.upKey.isDown){
+		if(this.vy > -50){
+			this.vy -= 1;
+		}
+		this.buffer[this.bufferIndex] = 1; 
+	}
+	if(this.state.downKey.isDown){
+		if(this.vy < 50){
+			this.vy += 1;
+		}
+		this.buffer[this.bufferIndex] = -1;
+	}
+	
+	if(!this.state.upKey.isDown && !this.state.downKey.isDown){
+		this.buffer[this.bufferIndex] = 0;
+	}
+	
+	if(this.state.rightKey.isDown){
+		if(this.vx < 50){
+			this.vx += 1;
+		}
+	}
+	if(this.state.leftKey.isDown){
+		if(this.vx > -50){
+			this.vx -= 1;
+		}
+	}
+
+
+	if(Math.abs(this.vy) > 0.0001){
+		this.vy = this.vy * 0.9
+	}else{
+		this.vy = 0;
+	}
+
+	if(Math.abs(this.vx) > 0.0001){
+		this.vx = this.vx * 0.9;
+	}else{
+		this.vx = 0;
+	}
+	
+	
+	this.y += this.vy; 
+	if(this.y < -180){
+		this.y = this.state.game.stage.height;
+	}else if(this.y > this.state.game.stage.height){
+		this.y = -100;
+	}
+	
+	if(this.x + this.vx > 0 && this.x + this.vx < this.state.game.stage.width){
+		this.x += this.vx;
+	}
+	
+	this.comet.rotation += this.vy/100;
+	
+	this.checkCollisions();
+	this.checkCollisionsPlasma();
+}
+
+Hero.prototype.objType = function(){
+	return 'Hero'
+}
+
 Hero.prototype.checkCollisions = function(){
 	var nebulasMatter = [];
 	for(var i = 0; i < this.state.solarSystems.length; i++){
@@ -175,61 +257,4 @@ Hero.prototype.checkCollisionsPlasma = function(){
 			}
 		}
 	}
-}
-
-Hero.prototype.update = function(){
-	Kiwi.Group.prototype.update.call(this);
-	
-	
-	if(this.state.upKey.isDown){
-		if(this.vy > -50){
-			this.vy -= 1;
-		}
-	}
-	if(this.state.downKey.isDown){
-		if(this.vy < 50){
-			this.vy += 1;
-		}
-	}
-	if(this.state.rightKey.isDown){
-		if(this.vx < 50){
-			this.vx += 1;
-		}
-	}
-	if(this.state.leftKey.isDown){
-		if(this.vx > -50){
-			this.vx -= 1;
-		}
-	}
-
-	if(Math.abs(this.vy) > 0.0001){
-		this.vy = this.vy * 0.9
-	}else{
-		this.vy = 0;
-	}
-
-	if(Math.abs(this.vx) > 0.0001){
-		this.vx = this.vx * 0.9;
-	}else{
-		this.vx = 0;
-	}
-	
-	
-	this.y += this.vy; 
-	if(this.y < -180){
-		this.y = this.state.game.stage.height;
-	}else if(this.y > this.state.game.stage.height){
-		this.y = -100;
-	}
-	
-	if(this.x + this.vx > 0 && this.x + this.vx < this.state.game.stage.width){
-		this.x += this.vx;
-	}
-	
-	this.checkCollisions();
-	this.checkCollisionsPlasma();
-}
-
-Hero.prototype.objType = function(){
-	return 'Hero'
 }
