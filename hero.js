@@ -4,7 +4,7 @@ var Hero = function( state, x, y, name){
 	this.y = y;
 	
 	this.buffer = [];
-	for (var i = 0; i < 60; i++){
+	for (var i = 0; i < 120; i++){
 		this.buffer.push(0);
 	}
 	this.bufferIndex = 0;
@@ -84,18 +84,51 @@ TailPiece.prototype.update = function(){
 	}
 		
 	this.y = this.hero.vy * this.index * 0.04;
+	//this.y -= this.hero.vy * Math.pow(this.index * 0.08, 2);
 	
 	var bufferIndex = this.hero.bufferIndex - this.index; 
 	if(bufferIndex < 0){
 		bufferIndex += this.hero.buffer.length;
 	}
-	this.y -= this.hero.buffer[bufferIndex] * 20;
+	
+	for(var i = 0; i < 60; i++){
+		var factor = 60 - i; 
+		this.y += this.hero.buffer[bufferIndex] * factor/30;
+		bufferIndex -= 1;
+		if(bufferIndex < 0){
+			bufferIndex += this.hero.buffer.length;
+		}
+	}
+	
+	if(this.index < 10){
+		var s = 1;
+		switch(this.index){
+			case 0: s = 0.7;
+			break;
+			case 1: s = 0.7;
+			break;
+			case 2: s = 0.8;
+			break;
+			case 3: s = 0.8;
+			break;
+			case 4: s = 0.85;
+			break;
+			case 5: s = 0.9;
+		}
+		this.y *= s;
 
+		if(this.index == 0){
+			console.log(this.y);
+		}
+		
+	}
+
+				
 	this.alpha = 1 - this.index/this.hero.numberOfTailPieces;
 	this.scaleX = 1 - this.index/this.hero.numberOfTailPieces;
 	this.scaleY = 1 - this.index/this.hero.numberOfTailPieces;
 
-	this.x = 0 - (6*this.index);
+	this.x = -40 - (6*this.index);
 	this.x -= this.hero.vx * Math.pow(this.index * 0.08, 2);
 	
 }
@@ -180,7 +213,15 @@ Hero.prototype.update = function(){
 			this.vx -= 1;
 		}
 	}
-
+	
+	
+	this.comet.rotation += this.vy/100;
+	
+	if(Math.abs(this.comet.rotation) > 0.0001){
+		this.comet.rotation *= 0.9;
+	}else{
+		this.comet.rotation = 0;
+	}
 
 	if(Math.abs(this.vy) > 0.0001){
 		this.vy = this.vy * 0.9
@@ -205,8 +246,7 @@ Hero.prototype.update = function(){
 	if(this.x + this.vx > 0 && this.x + this.vx < this.state.game.stage.width){
 		this.x += this.vx;
 	}
-	
-	this.comet.rotation += this.vy/100;
+
 	
 	this.checkCollisions();
 	this.checkCollisionsPlasma();

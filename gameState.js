@@ -154,7 +154,10 @@ gameState.updateHacked = function() {
 
 gameState.onKeyDownCallback = function(keyCode){
 	if(keyCode == this.debugKey.keyCode){
-		console.log(this.hero.buffer);
+		var bufferHalf = this.hero.buffer.slice(this.hero.bufferIndex + 1, this.hero.buffer.length);
+		var bufferHalf2 = this.hero.buffer.slice(0, this.hero.bufferIndex);
+		
+		console.log(bufferHalf.concat(bufferHalf2));
 	}
 	
 	if(keyCode == this.dieKey.keyCode){
