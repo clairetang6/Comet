@@ -16,8 +16,9 @@ gameState.preload = function() {
 	this.addTextureAtlas('rock118', 'assets/rock118_spritesheet.png', 'rock118JSON', 'assets/rock118_spritesheet.json');
 	this.addTextureAtlas('gas', 'assets/gas_spritesheet.png', 'gasJSON', 'assets/gas_spritesheet.json');
 	this.addTextureAtlas('moon', 'assets/moon_spritesheet.png', 'moonJSON', 'assets/moon_spritesheet.json');
-		
+
 	this.addAudio('song1', 'assets/sounds/galactic_2.ogg' );
+
 }
 
 gameState.create = function() {
