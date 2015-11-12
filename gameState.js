@@ -17,6 +17,7 @@ gameState.preload = function() {
 	this.addTextureAtlas('gas', 'assets/gas_spritesheet.png', 'gasJSON', 'assets/gas_spritesheet.json');
 	this.addTextureAtlas('moon', 'assets/moon_spritesheet.png', 'moonJSON', 'assets/moon_spritesheet.json');
 		
+	this.addAudio('song1', 'assets/sounds/galactic_2.ogg' );
 }
 
 gameState.create = function() {
@@ -93,6 +94,9 @@ gameState.create = function() {
 	this.debugGroup.visible = false;
 	this.addChild(this.debugGroup);
 	this.addChild(this.scoreCounter);
+	
+	this.backgroundMusic = new Kiwi.Sound.Audio( this.game, 'song1', 0.3, true );
+	this.backgroundMusic.play();
 }
 
 
