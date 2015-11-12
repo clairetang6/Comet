@@ -90,15 +90,13 @@ TailPiece.prototype.update = function(){
 		bufferIndex += this.hero.buffer.length;
 	}
 	
-	if(this.index == 0){
-		console.log(this.hero.buffer[bufferIndex])
-		console.log(this.hero.buffer[bufferIndex][0])
-	}
 	this.x = this.hero.buffer[bufferIndex][0] - this.hero.x;
 	this.y = this.hero.buffer[bufferIndex][1] - this.hero.y;
 	
-	this.x -= 40 + (6 * this.index);
+	this.x -= 30 + (6 * this.index);
 	this.x -= this.hero.vx * Math.pow(this.index * 0.08, 2);
+	
+
 }
 
 var Spark = function(state, hero, index){
@@ -183,6 +181,7 @@ Hero.prototype.update = function(){
 		this.comet.rotation = 0;
 	}
 
+
 	if(Math.abs(this.vy) > 0.0001){
 		this.vy = this.vy * 0.9
 	}else{
@@ -207,7 +206,7 @@ Hero.prototype.update = function(){
 		this.x += this.vx;
 	}
 
-	this.buffer[this.bufferIndex] = [this.x, this.y];
+	this.buffer[this.bufferIndex] = [this.x, this.y - Math.sin(this.comet.rotation) * this.comet.height/2];
 	
 	this.checkCollisions();
 	this.checkCollisionsPlasma();
