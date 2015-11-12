@@ -72,17 +72,16 @@ var TailPiece = function( state , hero, index ){
 	this.animation.add('firetail', [15], 0.1, false);
 	this.animation.add('appletail', [23], 0.1, false);
 	this.animation.play(this.hero.comet.name + 'tail');
+				
+	this.alpha = 1 - this.index/this.hero.numberOfTailPieces;
+	this.scaleX = 1 - this.index/this.hero.numberOfTailPieces;
+	this.scaleY = 1 - this.index/this.hero.numberOfTailPieces;	
 }
 Kiwi.extend( TailPiece, Kiwi.GameObjects.Sprite);
 
 TailPiece.prototype.update = function(){
 	Kiwi.GameObjects.Sprite.prototype.update.call(this);
 	
-	this.index = this.index + 1; 
-	if(this.index >= this.hero.numberOfTailPieces -1){
-		this.index = 0;
-	}
-		
 	this.y = this.hero.vy * this.index * 0.04;
 	//this.y -= this.hero.vy * Math.pow(this.index * 0.08, 2);
 	
@@ -91,46 +90,15 @@ TailPiece.prototype.update = function(){
 		bufferIndex += this.hero.buffer.length;
 	}
 	
-	for(var i = 0; i < 60; i++){
-		var factor = 60 - i; 
-		this.y += this.hero.buffer[bufferIndex] * factor/30;
-		bufferIndex -= 1;
-		if(bufferIndex < 0){
-			bufferIndex += this.hero.buffer.length;
-		}
+	if(this.index == 0){
+		console.log(this.hero.buffer[bufferIndex])
+		console.log(this.hero.buffer[bufferIndex][0])
 	}
+	this.x = this.hero.buffer[bufferIndex][0] - this.hero.x;
+	this.y = this.hero.buffer[bufferIndex][1] - this.hero.y;
 	
-	if(this.index < 10){
-		var s = 1;
-		switch(this.index){
-			case 0: s = 0.7;
-			break;
-			case 1: s = 0.7;
-			break;
-			case 2: s = 0.8;
-			break;
-			case 3: s = 0.8;
-			break;
-			case 4: s = 0.85;
-			break;
-			case 5: s = 0.9;
-		}
-		this.y *= s;
-
-		if(this.index == 0){
-			console.log(this.y);
-		}
-		
-	}
-
-				
-	this.alpha = 1 - this.index/this.hero.numberOfTailPieces;
-	this.scaleX = 1 - this.index/this.hero.numberOfTailPieces;
-	this.scaleY = 1 - this.index/this.hero.numberOfTailPieces;
-
-	this.x = -40 - (6*this.index);
+	this.x -= 40 + (6 * this.index);
 	this.x -= this.hero.vx * Math.pow(this.index * 0.08, 2);
-	
 }
 
 var Spark = function(state, hero, index){
@@ -190,19 +158,12 @@ Hero.prototype.update = function(){
 		if(this.vy > -50){
 			this.vy -= 1;
 		}
-		this.buffer[this.bufferIndex] = 1; 
 	}
 	if(this.state.downKey.isDown){
 		if(this.vy < 50){
 			this.vy += 1;
 		}
-		this.buffer[this.bufferIndex] = -1;
 	}
-	
-	if(!this.state.upKey.isDown && !this.state.downKey.isDown){
-		this.buffer[this.bufferIndex] = 0;
-	}
-	
 	if(this.state.rightKey.isDown){
 		if(this.vx < 50){
 			this.vx += 1;
@@ -213,7 +174,6 @@ Hero.prototype.update = function(){
 			this.vx -= 1;
 		}
 	}
-	
 	
 	this.comet.rotation += this.vy/100;
 	
@@ -247,6 +207,7 @@ Hero.prototype.update = function(){
 		this.x += this.vx;
 	}
 
+	this.buffer[this.bufferIndex] = [this.x, this.y];
 	
 	this.checkCollisions();
 	this.checkCollisionsPlasma();
