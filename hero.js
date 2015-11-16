@@ -23,8 +23,9 @@ var Hero = function( state, x, y, name){
 		return 'Comet';
 	}
 	this.comet.parent = this;
-	this.comet.components.add(new CircleColliderComponent({owner: this.comet, diameter: 50, isComet: true}));
-	this.hitCircle = this.comet.components.getComponent('CircleCollider').circle;
+	this.cometCollider = this.comet.components.add(new CircleColliderComponent({owner: this.comet, diameter: 40, offsetX: 4}));
+	this.cometCollider.active = false; //have hero call postUpdate so that position is correct
+	this.hitCircle = this.cometCollider.circle;
 		
 	this.tailGroup = new Kiwi.Group(state);
 
@@ -58,7 +59,6 @@ var Hero = function( state, x, y, name){
 	
 
 	this.isAlive = true;
-	console.log(this.hitCircle);
 }
 Kiwi.extend( Hero, Kiwi.Group );
 
@@ -180,7 +180,11 @@ Hero.prototype.update = function(){
 	}else{
 		this.comet.rotation = 0;
 	}
-
+	if(Math.abs(this.comet.rotation) > 0.5){
+		this.cometCollider.offsetX = 2;
+	}else{
+		this.cometCollider.offsetX = 4;
+	}
 
 	if(Math.abs(this.vy) > 0.0001){
 		this.vy = this.vy * 0.9
@@ -205,6 +209,8 @@ Hero.prototype.update = function(){
 	if(this.x + this.vx > 0 && this.x + this.vx < this.state.game.stage.width){
 		this.x += this.vx;
 	}
+	
+	this.cometCollider.postUpdate();
 
 	this.buffer[this.bufferIndex] = [this.x, this.y - Math.sin(this.comet.rotation) * this.comet.height/2];
 	

@@ -35,18 +35,22 @@ var CircleColliderComponent = function(params){
 		radius: params.diameter/2,
 		segments: 16,
 		centerOnTransform: true,
-		alpha: 0.3
+		alpha: 0.8
 	} );
 	
-	this.isComet = params.isComet;
-	
-	if(params.isComet && this.owner.parent){
-		this.circle = new Kiwi.Geom.Circle(this.owner.x + this.owner.width/2, this.owner.y + this.owner.height/2, params.diameter);			
-	}else{
-		this.circle = new Kiwi.Geom.Circle(this.owner.x + this.owner.width/2, this.owner.y + this.owner.height/2, params.diameter);					
-	}
-
+	this.circle = new Kiwi.Geom.Circle(this.owner.worldX + this.owner.width/2, this.owner.worldY + this.owner.height/2, params.diameter);
 	this.owner.hitCircle = this.circle;	
+	
+	if(params.offsetX){
+		this.offsetX = params.offsetX;
+	}else{
+		this.offsetX = 0;
+	}
+	if(params.offsetY){
+		this.offsetY = params.offsetY;
+	}else{
+		this.offsetY = 0;
+	}
 }
 Kiwi.extend( CircleColliderComponent, Kiwi.Component);
 
@@ -54,19 +58,13 @@ CircleColliderComponent.prototype.objType = function(){
 	return 'CircleColliderComponent';
 }
 
-CircleColliderComponent.prototype.update = function(){
-	Kiwi.Component.prototype.update.call(this);
+CircleColliderComponent.prototype.postUpdate = function(){
+	Kiwi.Component.prototype.postUpdate.call(this);
 	
-	if(this.isComet){
-		this.circle.x = this.owner.parent.x + this.owner.width/2;
-		this.circle.y = this.owner.parent.y + this.owner.height/2;
-	}else{
-		this.circle.x = this.owner.parent.x + this.owner.x + this.owner.width/2;
-		this.circle.y = this.owner.parent.y + this.owner.y + this.owner.height/2;
-	}
+	this.circle.x = this.owner.worldX + this.owner.width/2 + this.offsetX;
+	this.circle.y = this.owner.worldY + this.owner.height/2 + this.offsetY;
 	
 	this.debugCircle.x = this.circle.x;
 	this.debugCircle.y = this.circle.y;
-
 }
 
