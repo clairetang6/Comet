@@ -106,15 +106,16 @@ Meteor.prototype.update = function(){
 }
 
 var Planet = function( state, sun){
-	var planetTypes = ['rock85', 'rock118', 'gas', 'ring']
+	var planetTypes = ['rock85','ring', 'rock118', 'gas']
 	var numbersOfPlanets = [10, 54 ,20, 18];
-	var randomPlanet = state.random.integerInRange(0, 3);
+	var randomPlanet = state.random.integerInRange(0, 4);
+
 	var planetType = planetTypes[randomPlanet];
 	var numberOfPlanets = numbersOfPlanets[randomPlanet];
 
 	Kiwi.GameObjects.Sprite.call( this, state, state.textures[planetType], 0, 0, false);
 	this.state = state;
-	var planetNumber = this.state.random.integerInRange(0, numberOfPlanets-1);
+	var planetNumber = this.state.random.integerInRange(0, numberOfPlanets);
 	this.animation.switchTo(planetNumber);	
 		
 	this.randomizeSprite();
@@ -146,7 +147,17 @@ Planet.prototype.objType = function(){
 }
 
 Planet.prototype.randomizeSprite = function(){
+	var planetTypes = ['rock85','ring', 'rock118', 'gas']
+	var numbersOfPlanets = [10, 54 ,20, 18];
+	var randomPlanet = this.state.random.integerInRange(0, 4);
 
+	var planetType = planetTypes[randomPlanet];
+	var numberOfPlanets = numbersOfPlanets[randomPlanet];
+
+	this.atlas = this.state.textures[planetType];
+
+	var planetNumber = this.state.random.integerInRange(0, numberOfPlanets);
+	this.animation.switchTo(planetNumber);	
 }
 
 Planet.prototype.randomizeOrbitingSpeed = function(){
