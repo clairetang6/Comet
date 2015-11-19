@@ -151,6 +151,7 @@ Hero.prototype.die = function(){
 Hero.prototype.update = function(){
 	Kiwi.Group.prototype.update.call(this);
 	var deltaY = 0;
+	var deltaX = 0; 
 	
 	this.bufferIndex += 1;
 	if(this.bufferIndex > this.buffer.length - 1){
@@ -160,19 +161,23 @@ Hero.prototype.update = function(){
 	if(this.state.game.input.isDown){
 		if(this.touchTime == 0){
 			this.touchDownY = this.state.game.input.y;
+			this.touchDownX = this.state.game.input.x; 
 		}
 		
 		this.touchTime++;
 		
 		deltaY = this.state.game.input.y - this.touchDownY; 
+		deltaX = this.state.game.input.x - this.touchDownX;
 		
 		this.touchDownY = 0.95 * this.state.game.input.y + 0.05 * this.touchDownY; 
+		this.touchDownX = 0.95 * this.state.game.input.x + 0.05 * this.touchDownX;
 	}else{
 		this.touchTime = 0;
 	}
 
-	console.log(deltaY);
-	this.vy -= deltaY/5; 
+
+	this.vy -= deltaY/5;
+	this.vx -= deltaX/20; 
 	
 	if(this.vy > 50){
 		this.vy = 50;
@@ -181,6 +186,12 @@ Hero.prototype.update = function(){
 		this.vy = -50;
 	}
 	
+	if(this.vx > 50){
+		this.vx = 50;
+	}
+	if(this.vx < -50){
+		this.vx = -50;
+	}	
 	
 	if(this.state.upKey.isDown){
 		if(this.vy > -50){
