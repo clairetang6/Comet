@@ -3,6 +3,10 @@ var Hero = function( state, x, y, name){
 	this.x = x; 
 	this.y = y;
 	
+	this.touchDownX = 0;
+	this.touchDownY = 0;
+	this.touchTime = 0; 
+	
 	this.buffer = [];
 	for (var i = 0; i < 120; i++){
 		this.buffer.push(0);
@@ -146,12 +150,37 @@ Hero.prototype.die = function(){
 
 Hero.prototype.update = function(){
 	Kiwi.Group.prototype.update.call(this);
+	var deltaY = 0;
 	
 	this.bufferIndex += 1;
 	if(this.bufferIndex > this.buffer.length - 1){
 		this.bufferIndex = 0;
 	}	
 		
+	if(this.state.game.input.isDown){
+		if(this.touchTime == 0){
+			this.touchDownY = this.state.game.input.y;
+		}
+		
+		this.touchTime++;
+		
+		deltaY = this.state.game.input.y - this.touchDownY; 
+		
+	}else{
+		this.touchTime = 0;
+	}
+
+	console.log(deltaY);
+	this.vy -= deltaY/50; 
+	
+	if(this.vy > 50){
+		this.vy = 50;
+	}
+	if(this.vy < -50){
+		this.vy = -50;
+	}
+	
+	
 	if(this.state.upKey.isDown){
 		if(this.vy > -50){
 			this.vy -= 1;
@@ -198,7 +227,17 @@ Hero.prototype.update = function(){
 		this.vx = 0;
 	}
 	
+	this.updatePositionBasedOnVelocity();
+
+	this.cometCollider.postUpdate();
+
+	this.buffer[this.bufferIndex] = [this.x, this.y - Math.sin(this.comet.rotation) * this.comet.height/2];
 	
+	this.checkCollisions();
+	this.checkCollisionsPlasma();
+}
+
+Hero.prototype.updatePositionBasedOnVelocity = function(){
 	this.y += this.vy; 
 	if(this.y < -180){
 		this.y = this.state.game.stage.height;
@@ -208,14 +247,7 @@ Hero.prototype.update = function(){
 	
 	if(this.x + this.vx > 0 && this.x + this.vx < this.state.game.stage.width){
 		this.x += this.vx;
-	}
-	
-	this.cometCollider.postUpdate();
-
-	this.buffer[this.bufferIndex] = [this.x, this.y - Math.sin(this.comet.rotation) * this.comet.height/2];
-	
-	this.checkCollisions();
-	this.checkCollisionsPlasma();
+	}	
 }
 
 Hero.prototype.objType = function(){
