@@ -166,12 +166,13 @@ Hero.prototype.update = function(){
 		
 		deltaY = this.state.game.input.y - this.touchDownY; 
 		
+		this.touchDownY = 0.95 * this.state.game.input.y + 0.05 * this.touchDownY; 
 	}else{
 		this.touchTime = 0;
 	}
 
 	console.log(deltaY);
-	this.vy -= deltaY/50; 
+	this.vy -= deltaY/5; 
 	
 	if(this.vy > 50){
 		this.vy = 50;
