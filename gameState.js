@@ -5,6 +5,7 @@ gameState.preload = function() {
 	this.addSpriteSheet('hero_spritesheet', 'assets/hero/hero_spritesheet.png', 232, 220);
 	
 	this.addSpriteSheet('plasma_spritesheet', 'assets/plasma_spritesheet.png', 75, 75);
+	this.addSpriteSheet('digits_white_spritesheet', 'assets/digits_white.png', 41, 59);
 	
 	this.addImage('sparkParticle', 'assets/sparks/spark_particle_1.png')
 	this.addImage('meteorite', 'assets/sparks/met_1.png');
@@ -54,7 +55,7 @@ gameState.create = function() {
 	this.plasmaGroup.addChild(new Plasma(this, 'red'));
 	
 	this.score = 0;
-	this.scoreCounter = new Kiwi.GameObjects.TextField(this, this.score, 0, 0, "#ffffff");
+	this.scoreCounter = new ScoreCounter(this);
 	
 	this.debugGroup = new Kiwi.Group(this);
 	
@@ -112,7 +113,7 @@ gameState.update = function() {
 		if(!this.hero.isAlive){
 			this.score = 0;
 		}
-		this.scoreCounter.text = this.score;
+		this.scoreCounter.setValue(this.score);
 		
 		var solarSystemMoving = false;
 		for(var i = 0; i < this.solarSystems.length; i++){
