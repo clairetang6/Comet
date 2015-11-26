@@ -43,8 +43,28 @@ titleState.create = function() {
 	this.addChild(this.nebulaGroup);
 	this.addChild(this.backgroundSparkParticles);
 	this.addChild(this.foregroundSparkParticles);
-	var cover = new Kiwi.GameObjects.StaticImage(this, 'cover');
+	var cover = new Kiwi.GameObjects.StaticImage(this, 'cover', 0, 0);
+	var rectHeight =  (this.game.stage.height-cover.height)/2;
+	cover.y =  (this.game.stage.height-cover.height)/2;
 	this.addChild(cover);
+
+	var rectParams =  {
+		state: this,
+		width: 800,
+		height: rectHeight + 2,
+		centerOnTransform: false,
+		x: 0,
+		y: 0,
+		color: [ 1, 1, 1 ],
+		drawStroke: false
+	} ;
+	
+	var rectangle = new Kiwi.Plugins.Primitives.Rectangle(rectParams);
+	var rectangle2 = new Kiwi.Plugins.Primitives.Rectangle(rectParams);
+	rectangle2.y += cover.height + rectangle2.height - 2;
+	
+	this.addChild(rectangle);
+	this.addChild(rectangle2);
 	
 	this.game.input.keyboard.onKeyDown.add(this.onKeyDownCallback, this);
 	this.game.input.onDown.add(this.onKeyDownCallback, this);

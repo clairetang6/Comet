@@ -1,5 +1,5 @@
 var gameOptions = {
-	width: 1000,
+	width: 800,
 	height: 600
 }
 
