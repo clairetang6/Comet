@@ -28,6 +28,51 @@ SparkParticle.prototype.update = function(){
 	}
 }
 
+var Nebula = function( state, name, x, speed ){
+	Kiwi.GameObjects.StaticImage.call(this, state, state.textures[name], x, 0); 
+	this.state = state;
+	
+	this.alpha = 0.5;
+}
+Kiwi.extend(Nebula, Kiwi.GameObjects.StaticImage);
+
+Nebula.prototype.update = function(){
+	this.x -= 10;
+	if(this.x < -1 * (this.width + 100)){
+		this.setYPosition();
+		this.x = this.state.game.stage.width + 100;
+	}
+}
+
+Nebula.prototype.setYPosition = function(){
+	if(this.state.random.frac() > 0.2){
+		if(this.parent.lastNebulaChange == 'up'){
+			if(this.parent.lastNebulaY - 10 > 0){
+				this.y = this.parent.lastNebulaY - 10;				
+			}else{
+				this.y = this.parent.lastNebulaY + 10;
+				this.parent.lastNebulaChange = 'down'; 
+			}
+		}else{
+			if(this.parent.lastNebulaY + 10 < 200){
+				this.y = this.parent.lastNebulaY + 10;
+			}else{
+				this.y = this.parent.lastNebulaY - 10;
+				this.parent.lastNebulaChange = 'up';
+			}
+		}
+	}else{
+		if(this.parent.lastNebulaChange == 'up'){
+			this.y = this.parent.lastNebulaY + 10;
+			this.parent.lastNebulaChange = 'down';
+		}else{
+			this.y = this.parent.lastNebulaY - 10;
+			this.parent.lastNebulaChange = 'up';
+		}		
+	}
+	this.parent.lastNebulaY = this.y;
+}
+
 var Plasma = function( state, color ){
 	Kiwi.GameObjects.Sprite.call(this, state, state.textures['plasma_spritesheet'], 100, 100, true);
 	

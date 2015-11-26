@@ -11,6 +11,10 @@ gameState.preload = function() {
 	this.addImage('meteorite', 'assets/sparks/met_1.png');
 	this.addImage('redSpark', 'assets/sparks/red_fire_spark.png');
 	
+	this.addImage('nebula1', 'assets/nebula/nebulous_gas_1.png');
+	this.addImage('nebula2', 'assets/nebula/nebulous_gas_2.png');
+	this.addImage('nebula3', 'assets/nebula/nebulous_gas_3.png');
+	
 	this.addTextureAtlas('sun', 'assets/sun_spritesheet.png', 'sunJSON', 'assets/sun_spritesheet.json');
 	this.addTextureAtlas('ring', 'assets/ring_spritesheet.png', 'ringJSON', 'assets/ring_spritesheet.json');
 	this.addTextureAtlas('rock85', 'assets/rock85_spritesheet.png', 'rock85JSON', 'assets/rock85_spritesheet.json');
@@ -47,8 +51,20 @@ gameState.create = function() {
 	this.foregroundSparkParticles = new Kiwi.Group(this);
 	for (var i = 0; i < 7; i++){
 		this.foregroundSparkParticles.addChild(new SparkParticle(this, false));
-	}	
+	}
 	
+	this.nebulaGroup = new Kiwi.Group(this);
+	this.nebulaGroup.lastNebulaY = 0;
+	this.nebulaGroup.lastNebulaChange = 'up';
+	for(var i = 1; i <=6; i++){
+		var index = i%3+1
+		var nebula = new Nebula(this, 'nebula' + index, this.game.stage.width + (i-1) * this.game.stage.width/3);
+		this.nebulaGroup.addChild(nebula);
+	}
+	for(var i = 0; i < this.nebulaGroup.members.length; i++){
+		this.nebulaGroup.members[i].setYPosition();
+	}
+		
 	this.meteor = new Meteor(this);
 	
 	this.plasmaGroup = new Kiwi.Group(this);
@@ -79,7 +95,7 @@ gameState.create = function() {
 	this.rightKey = this.game.input.keyboard.addKey(Kiwi.Input.Keycodes.RIGHT);
 	this.downKey = this.game.input.keyboard.addKey(Kiwi.Input.Keycodes.DOWN);	
 
-
+	this.addChild(this.nebulaGroup);
 	this.addChild(this.backgroundSparkParticles);
 	this.addChild(this.meteor);
 	for(var i = 0; i < this.solarSystems.length; i++){
