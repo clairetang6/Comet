@@ -37,7 +37,7 @@ var Nebula = function( state, name, x, speed ){
 Kiwi.extend(Nebula, Kiwi.GameObjects.StaticImage);
 
 Nebula.prototype.update = function(){
-	this.x -= 10;
+	this.x -= 0.6;
 	if(this.x < -1 * (this.width + 100)){
 		this.setYPosition();
 		this.x = this.state.game.stage.width + 100;
