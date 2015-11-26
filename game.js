@@ -1,5 +1,5 @@
 var gameOptions = {
-	width: 800,
+	width: 1000,
 	height: 600
 }
 
@@ -10,5 +10,5 @@ myGame.stage.color = '000000';
 myGame.states.addState('titleState');
 myGame.states.addState('gameState');
 
-myGame.states.switchState('gameState');
+myGame.states.switchState('titleState');
 

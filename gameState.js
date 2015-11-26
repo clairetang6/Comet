@@ -7,13 +7,8 @@ gameState.preload = function() {
 	this.addSpriteSheet('plasma_spritesheet', 'assets/plasma_spritesheet.png', 75, 75);
 	this.addSpriteSheet('digits_white_spritesheet', 'assets/digits_white.png', 41, 59);
 	
-	this.addImage('sparkParticle', 'assets/sparks/spark_particle_1.png')
 	this.addImage('meteorite', 'assets/sparks/met_1.png');
 	this.addImage('redSpark', 'assets/sparks/red_fire_spark.png');
-	
-	this.addImage('nebula1', 'assets/nebula/nebulous_gas_1.png');
-	this.addImage('nebula2', 'assets/nebula/nebulous_gas_2.png');
-	this.addImage('nebula3', 'assets/nebula/nebulous_gas_3.png');
 	
 	this.addTextureAtlas('sun', 'assets/sun_spritesheet.png', 'sunJSON', 'assets/sun_spritesheet.json');
 	this.addTextureAtlas('ring', 'assets/ring_spritesheet.png', 'ringJSON', 'assets/ring_spritesheet.json');
