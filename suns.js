@@ -258,7 +258,7 @@ var Sun = function( state, x, y, scale){
 Kiwi.extend( Sun, Kiwi.GameObjects.Sprite );
 
 Sun.prototype.randomizeSprite = function(){
-	var sunNumber = this.state.random.integerInRange(0, 24);
+	var sunNumber = this.state.random.integerInRange(0, 21);
 	this.animation.switchTo(sunNumber);	
 }
 
