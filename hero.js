@@ -132,7 +132,7 @@ Spark.prototype.update = function(){
 
 	this.scaleX = 1 - this.index/this.hero.numberOfSparks;
 	this.scaleY = 1 - this.index/this.hero.numberOfSparks;
-		
+	this.alpha = 1 - Math.abs(this.hero.comet.rotation)/1.5;
 }
 
 Spark.prototype.setRandomAngle = function(){
