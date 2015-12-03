@@ -33,9 +33,6 @@ var Hero = function( state, x, y, name){
 		
 	this.tailGroup = new Kiwi.Group(state);
 
-	this.tailScales = [0, 1];
-	this.tailAlphas = [0, 1];
-
 	this.numberOfTailPieces = 60;
 	for (var i = 0; i < this.numberOfTailPieces; i++){
 		var tailPiece = new TailPiece( state, this, i);
@@ -76,10 +73,10 @@ var TailPiece = function( state , hero, index ){
 	this.animation.add('firetail', [15], 0.1, false);
 	this.animation.add('appletail', [23], 0.1, false);
 	this.animation.play(this.hero.comet.name + 'tail');
-				
+
 	this.alpha = 1 - this.index/this.hero.numberOfTailPieces;
-	this.scaleX = 1 - this.index/this.hero.numberOfTailPieces;
-	this.scaleY = 1 - this.index/this.hero.numberOfTailPieces;	
+	this.scaleX = (1 - this.index/this.hero.numberOfTailPieces)*100;
+	this.scaleY = (1 - this.index/this.hero.numberOfTailPieces)*100;	
 }
 Kiwi.extend( TailPiece, Kiwi.GameObjects.Sprite);
 
@@ -97,7 +94,8 @@ TailPiece.prototype.update = function(){
 	this.x = this.hero.buffer[bufferIndex][0] - this.hero.x;
 	this.y = this.hero.buffer[bufferIndex][1] - this.hero.y;
 	
-	this.x -= 30 + (6 * this.index);
+	
+	this.x -= 25 + (6 * this.index);
 	this.x -= this.hero.vx * Math.pow(this.index * 0.08, 2);
 	
 
@@ -125,8 +123,10 @@ Spark.prototype.update = function(){
 		this.setRandomAngle();
 	}
 	
-	this.x = this.index * 10 * Math.cos(this.angle) + this.startingX;
-	this.y = this.index * 10 * Math.sin(this.angle) + this.startingY;
+	var angle = this.angle + this.hero.comet.rotation;
+
+	this.x = this.index * 10 * Math.cos(angle) + this.startingX;
+	this.y = this.index * 10 * Math.sin(angle) + this.startingY;
 	this.x -= this.hero.vx * Math.pow(this.index * 0.12, 2);
 	this.y -= this.hero.vy * Math.pow(this.index * 0.12, 2);	
 
@@ -156,7 +156,7 @@ Hero.prototype.update = function(){
 	this.bufferIndex += 1;
 	if(this.bufferIndex > this.buffer.length - 1){
 		this.bufferIndex = 0;
-	}	
+	}
 		
 	if(this.state.game.input.isDown){
 		if(this.touchTime == 0){
@@ -174,7 +174,6 @@ Hero.prototype.update = function(){
 	}else{
 		this.touchTime = 0;
 	}
-
 
 	this.vy -= deltaY/5;
 	this.vx -= deltaX/20; 
@@ -242,8 +241,10 @@ Hero.prototype.update = function(){
 	this.updatePositionBasedOnVelocity();
 
 	this.cometCollider.postUpdate();
-
-	this.buffer[this.bufferIndex] = [this.x, this.y - Math.sin(this.comet.rotation) * this.comet.height/2];
+	
+	this.offsetY = Math.sin(this.comet.rotation) * this.comet.height/4.5;
+	
+	this.buffer[this.bufferIndex] = [this.x, this.y - this.offsetY];
 	
 	this.checkCollisions();
 	this.checkCollisionsPlasma();
