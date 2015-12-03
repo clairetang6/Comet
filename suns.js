@@ -12,7 +12,6 @@ var SparkParticle = function( state , forBackground){
 		this.scale = this.state.random.integerInRange(20, 50) / 80;
 		this.speed = this.scaleX * 10;
 	}
-
 	
 }
 Kiwi.extend(SparkParticle, Kiwi.GameObjects.Sprite);
@@ -152,7 +151,7 @@ Meteor.prototype.update = function(){
 
 var Planet = function( state, sun){
 	var planetTypes = ['rock85','ring', 'rock118', 'gas']
-	var numbersOfPlanets = [10, 54 ,20, 18];
+	var numbersOfPlanets = [10, 18, 54, 20];
 	var randomPlanet = state.random.integerInRange(0, 4);
 
 	var planetType = planetTypes[randomPlanet];
@@ -193,7 +192,7 @@ Planet.prototype.objType = function(){
 
 Planet.prototype.randomizeSprite = function(){
 	var planetTypes = ['rock85','ring', 'rock118', 'gas']
-	var numbersOfPlanets = [10, 54 ,20, 18];
+	var numbersOfPlanets = [10, 17 ,20, 17];
 	var randomPlanet = this.state.random.integerInRange(0, 4);
 
 	var planetType = planetTypes[randomPlanet];
