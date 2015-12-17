@@ -1,3 +1,42 @@
+var TouchControlComponent = function(params){
+	Kiwi.Component.call(this, params.owner, "TouchControlComponent");
+	
+	this.touchDownX = 0;
+	this.touchDownY = 0;
+	this.touchTime = 0;
+	this.deltaY = 0;
+	this.deltaX = 0;
+}
+Kiwi.extend(TouchControlComponent, Kiwi.Component);
+
+TouchControlComponent.prototype.objType = function(){
+	return "TouchControlComponent";
+}
+
+TouchControlComponent.prototype.update = function(){
+	Kiwi.Component.prototype.update.call(this);	
+	
+	this.deltaY = 0;
+	this.deltaX = 0;
+	
+	if(this.owner.state.game.input.isDown){
+		if(this.touchTime == 0){
+			this.touchDownY = this.owner.state.game.input.y;
+			this.touchDownX = this.owner.state.game.input.x;
+		}
+		
+		this.touchTime++;
+		
+		this.deltaY = this.owner.state.game.input.y - this.touchDownY;
+		this.deltaX = this.owner.state.game.input.x - this.touchDownX;
+		
+		this.touchDownY = 0.95 * this.owner.state.game.input.y + 0.05 * this.touchDownY;
+		this.touchDownX = 0.95 * this.owner.state.game.input.x + 0.05 * this.touchDownX;
+	}else{
+		this.touchTime = 0;
+	}
+}
+
 var OrbiterComponent = function(params){
 	Kiwi.Component.call( this, params.owner, params.name );
 	this.orbitee = params.orbitee;
